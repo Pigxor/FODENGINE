@@ -8,6 +8,8 @@ add_library(fodengine
  src/FODENGINE/engine.h
  src/FODENGINE/entity.cpp
  src/FODENGINE/entity.h
+ src/FODENGINE/component.cpp
+ src/FODENGINE/component.h
 )
 target_link_libraries(fodengine SDL2 opengl32 glew32)
 
