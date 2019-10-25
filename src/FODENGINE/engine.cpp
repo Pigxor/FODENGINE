@@ -26,6 +26,12 @@ void Engine::start()
 		(*it)->Update();
 		std::cout << "Entity Update Finish" << std::endl;
 	}
+	for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
+	{
+		std::cout << "Component Display" << std::endl;
+		(*it)->Display();
+
+	}
 }
 
 void Engine::stop()

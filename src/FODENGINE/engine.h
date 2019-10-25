@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "component.h"
+#include "Renderer.h"
 
 #include <iostream>
 #include <memory>

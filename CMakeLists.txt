@@ -10,6 +10,11 @@ add_library(fodengine
  src/FODENGINE/entity.h
  src/FODENGINE/component.cpp
  src/FODENGINE/component.h
+ src/FODENGINE/Renderer.cpp
+ src/FODENGINE/Renderer.h
+ src/FODENGINE/triangle.cpp
+ src/FODENGINE/Exception.cpp
+ src/FODENGINE/Exception.h
 )
 target_link_libraries(fodengine SDL2 opengl32 glew32)
 
