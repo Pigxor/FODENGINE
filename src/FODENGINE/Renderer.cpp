@@ -176,8 +176,8 @@ void Triangle::onDisplay()
 
 	bool quit = false;
 
-	while (!quit)
-	{
+	//while (!quit)
+	//{
 		SDL_Event event = { 0 };
 
 		while (SDL_PollEvent(&event))
@@ -200,6 +200,6 @@ void Triangle::onDisplay()
 		glUseProgram(0);
 
 		SDL_GL_SwapWindow(window);
-	}
+	//}
 }
 

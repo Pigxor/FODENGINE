@@ -19,18 +19,24 @@ std::shared_ptr<Entity> Engine::addEntity()
 
 void Engine::start()
 {
-	for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
-	{
 
-		std::cout << "Entity Update Start" << std::endl;		
-		(*it)->Update();
-		std::cout << "Entity Update Finish" << std::endl;
-	}
-	for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
-	{
-		std::cout << "Component Display" << std::endl;
-		(*it)->Display();
+	bool quit = false;
 
+	while (!quit)
+	{
+		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+
+			std::cout << "Entity Update Start" << std::endl;
+			(*it)->Update();
+			std::cout << "Entity Update Finish" << std::endl;
+		}
+		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			std::cout << "Component Display" << std::endl;
+			(*it)->Display();
+
+		}
 	}
 }
 
