@@ -19,5 +19,11 @@ void Component::onDisplay()
 
 std::shared_ptr<Engine> Component::getCore()
 {
+
 	return std::shared_ptr<Engine>();
+}
+
+std::shared_ptr<Entity> Component::getEntity()
+{
+	return entity.lock();
 }

@@ -4,7 +4,7 @@
 #include "component.h"
 #include "SDL2/SDL.h"
 #include "GL/glew.h"
-#include "Exception.h"
+
 
 class Triangle : public Component
 {

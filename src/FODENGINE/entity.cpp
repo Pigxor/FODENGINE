@@ -1,5 +1,5 @@
 #include"entity.h"
-
+#include "component.h"
 
 void Entity::Update()
 {
@@ -8,7 +8,6 @@ void Entity::Update()
 	{
 		std::cout << "Component Update Start" << std::endl;
 		(*it)->onUpdate();
-
 	}
 		
 }
@@ -23,7 +22,9 @@ void Entity::Display()
 	}
 }
 
-std::shared_ptr<Engine> Entity::getCore()
+
+std::shared_ptr<Engine> Entity::getEngine(std::shared_ptr<Engine> _engine)
 {
-	return std::shared_ptr<Engine>();
+	engine = _engine;
+	return engine.lock();
 }

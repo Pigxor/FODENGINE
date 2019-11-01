@@ -13,7 +13,7 @@ class Entity;
 
 class Engine
 {
-
+	std::weak_ptr<Engine> self;
 	std::vector<std::shared_ptr<Entity>> entities;
 public:
 

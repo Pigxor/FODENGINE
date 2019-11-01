@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Exception.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -40,7 +41,7 @@ Triangle::Triangle()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		throw std::exception();
+		throw rend::Exception("SDL Failed To Initialise ");
 	}
 
 	window = SDL_CreateWindow("Lab 4 - Architecture",
@@ -49,12 +50,12 @@ Triangle::Triangle()
 
 	if (!SDL_GL_CreateContext(window))
 	{
-		throw std::exception();
+		throw rend::Exception("Window Failed To Initialise ");
 	}
 
 	if (glewInit() != GLEW_OK)
 	{
-		throw std::exception();
+		throw rend::Exception("Glew Failed To Initialise ");
 	}
 
 	GLuint positionsVboId = 0;
@@ -64,7 +65,7 @@ Triangle::Triangle()
 
 	if (!positionsVboId)
 	{
-		throw std::exception();
+		throw rend::Exception("PositionsVBO Failed ");
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, positionsVboId);
@@ -82,7 +83,7 @@ Triangle::Triangle()
 
 	if (!colorsVboId)
 	{
-		throw std::exception();
+		throw rend::Exception("ColoursVBO Failed ");
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
@@ -100,7 +101,7 @@ Triangle::Triangle()
 
 	if (!vaoId)
 	{
-		throw std::exception();
+		throw rend::Exception("Vao Failed ");
 	}
 
 	glBindVertexArray(vaoId);
@@ -127,7 +128,7 @@ Triangle::Triangle()
 
 	if (!success)
 	{
-		throw std::exception();
+		throw rend::Exception("Failed To Get Vertex Shader ");
 	}
 
 	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
@@ -137,7 +138,7 @@ Triangle::Triangle()
 
 	if (!success)
 	{
-		throw std::exception();
+		throw rend::Exception("Failed To Get Fragment Shader ");
 	}
 
 	programId = glCreateProgram();
@@ -148,7 +149,7 @@ Triangle::Triangle()
 
 	if (glGetError() != GL_NO_ERROR)
 	{
-		throw std::exception();
+		throw rend::Exception("Failed To Bind Attibute ");
 	}
 
 	glLinkProgram(programId);
@@ -156,7 +157,7 @@ Triangle::Triangle()
 
 	if (!success)
 	{
-		throw std::exception();
+		throw rend::Exception("Failed To Link Program ");
 	}
 
 	glDetachShader(programId, vertexShaderId);
@@ -174,32 +175,17 @@ Triangle::~Triangle()
 void Triangle::onDisplay()
 {
 
-	bool quit = false;
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	//while (!quit)
-	//{
-		SDL_Event event = { 0 };
+	glUseProgram(programId);
+	glBindVertexArray(vaoId);
 
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-		}
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+	glBindVertexArray(0);
+	glUseProgram(0);
 
-		glUseProgram(programId);
-		glBindVertexArray(vaoId);
-
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		glBindVertexArray(0);
-		glUseProgram(0);
-
-		SDL_GL_SwapWindow(window);
-	//}
+	SDL_GL_SwapWindow(window);
 }
 

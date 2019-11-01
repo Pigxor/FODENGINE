@@ -15,6 +15,10 @@ add_library(fodengine
  src/FODENGINE/triangle.cpp
  src/FODENGINE/Exception.cpp
  src/FODENGINE/Exception.h
+ src/FODENGINE/Transform.cpp
+ src/FODENGINE/Transform.h
+ src/FODENGINE/Camera.cpp
+ src/FODENGINE/Camera.h
 )
 target_link_libraries(fodengine SDL2 opengl32 glew32)
 

@@ -3,6 +3,10 @@
 
 #include <memory>
 #include <iostream>
+#include "SDL2/SDL.h"
+#include "GL/glew.h"
+#include "glm/glm.hpp"
+
 class Entity;
 class Engine;
 
@@ -18,6 +22,8 @@ class Component
 public:
 
 	std::shared_ptr<Engine> getCore();
+	std::shared_ptr<Entity> getEntity();
+
 
 };
 
