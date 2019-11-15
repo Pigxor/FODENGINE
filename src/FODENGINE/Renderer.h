@@ -2,8 +2,8 @@
 #define _RENDERER_H_
 
 #include "component.h"
-#include "SDL2/SDL.h"
-#include "GL/glew.h"
+#include <rend/rend.h>
+
 
 
 class Triangle : public Component

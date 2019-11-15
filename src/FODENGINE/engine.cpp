@@ -1,13 +1,35 @@
 #include "engine.h"
 
 
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
 
-
+Engine::~Engine()
+{
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
 
 std::shared_ptr<Engine> Engine::initialize()
 {
 	std::shared_ptr<Engine> engine = std::make_shared<Engine>();
 	engine->self = engine;
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		throw rend::Exception("SDL Failed To Initialise ");
+	}
+
+	engine->window = SDL_CreateWindow("FODEngine",
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+
+	if (!SDL_GL_CreateContext(engine->window))
+	{
+		throw rend::Exception("Window Failed To Initialise ");
+	}
+
+	engine->context = rend::Context::initialize();
+
 	return engine;
 }
 
@@ -18,6 +40,11 @@ std::shared_ptr<Entity> Engine::addEntity()
 	entity->engine = self;
 	entity->self = entity;
 	return entity;
+}
+
+std::sr1::shared_ptr<rend::Context> Engine::getContext()
+{
+	return context;
 }
 
 void Engine::start()
@@ -37,17 +64,12 @@ void Engine::start()
 		}
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-
-			std::cout << "Entity Update Start" << std::endl;
-			(*it)->Update();
-			std::cout << "Entity Update Finish" << std::endl;
-		}
+			(*it)->Update();		}
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-			std::cout << "Component Display" << std::endl;
 			(*it)->Display();
-
 		}
+		SDL_GL_SwapWindow(window);
 	}
 }
 

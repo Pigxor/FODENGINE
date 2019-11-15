@@ -1,5 +1,4 @@
 #include "Renderer.h"
-#include "Exception.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -39,19 +38,17 @@ const GLchar *fragmentShaderSrc =
 
 Triangle::Triangle()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		throw rend::Exception("SDL Failed To Initialise ");
-	}
-
-	window = SDL_CreateWindow("Lab 4 - Architecture",
-		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-
-	if (!SDL_GL_CreateContext(window))
-	{
-		throw rend::Exception("Window Failed To Initialise ");
-	}
+	//if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	//{
+	//	throw rend::Exception("SDL Failed To Initialise ");
+	//}
+	//window = SDL_CreateWindow("Lab 4 - Architecture",
+	//	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	//	WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	//if (!SDL_GL_CreateContext(window))
+	//{
+	//	throw rend::Exception("Window Failed To Initialise ");
+	//}
 
 	if (glewInit() != GLEW_OK)
 	{
@@ -168,8 +165,6 @@ Triangle::Triangle()
 
 Triangle::~Triangle()
 {
-	SDL_DestroyWindow(window);
-	SDL_Quit();
 }
 
 void Triangle::onDisplay()
@@ -186,6 +181,5 @@ void Triangle::onDisplay()
 	glBindVertexArray(0);
 	glUseProgram(0);
 
-	SDL_GL_SwapWindow(window);
 }
 

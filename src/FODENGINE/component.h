@@ -15,6 +15,7 @@ class Component
 	friend Entity;
 
 	std::weak_ptr<Entity> entity;
+	std::weak_ptr<Engine> engine;
 	virtual void onCreate();
 	virtual void onStart();
 	virtual void onUpdate();
