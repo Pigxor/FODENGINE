@@ -13,7 +13,7 @@ class Engine;
 class Component
 {
 	friend Entity;
-
+protected: 
 	std::weak_ptr<Entity> entity;
 	std::weak_ptr<Engine> engine;
 	virtual void onCreate();
@@ -28,4 +28,4 @@ public:
 
 };
 
-#endif // !_ENGINE_H
+#endif 

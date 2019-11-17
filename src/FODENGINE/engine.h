@@ -13,15 +13,18 @@
 
 class Entity;
 
+
 class Engine
 {
-	std::sr1::shared_ptr<rend::Context> context;
+
+
 	std::weak_ptr<Engine> self;
 	
 	std::vector<std::shared_ptr<Entity>> entities;
 	SDL_Window* window;
 
 public:
+	std::sr1::shared_ptr<rend::Context> context;
 	~Engine();
 	static std::shared_ptr<Engine> initialize();
 	std::shared_ptr<Entity> addEntity();

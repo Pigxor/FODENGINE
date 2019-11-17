@@ -45,6 +45,7 @@ public:
 		std::shared_ptr<T>rtn = std::make_shared<T>();
 		components.push_back(rtn);
 		rtn->entity = self;
+		rtn->engine = engine;
 		return rtn;
 	}
 	template <class T, class U>
@@ -52,6 +53,7 @@ public:
 		std::shared_ptr<T>rtn = std::make_shared<T>();
 		components.push_back(rtn);
 		rtn->entity = self;
+		rtn->engine = engine;
 		return rtn;
 	}
 	template <class T, class U, class V>
@@ -59,6 +61,8 @@ public:
 		std::shared_ptr<T>rtn = std::make_shared<T>();
 		components.push_back(rtn);
 		rtn->entity = self;
+		rtn->engine = engine;
+		engine->context->createShader();
 		return rtn;
 	}
 	template <class T, class U, class V, class W>
@@ -66,6 +70,7 @@ public:
 		std::shared_ptr<T>rtn = std::make_shared<T>();
 		components.push_back(rtn);
 		rtn->entity = self;
+		rtn->engine = engine;
 		return rtn;
 	}
 };

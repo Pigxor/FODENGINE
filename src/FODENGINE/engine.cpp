@@ -1,11 +1,12 @@
 #include "engine.h"
 
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 768
 
 Engine::~Engine()
 {
+	SDL_GL_DeleteContext(&context);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }

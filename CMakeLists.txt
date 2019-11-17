@@ -13,6 +13,7 @@ add_library(rend
   src/rend/Buffer.cpp
   src/rend/Mesh.cpp
   src/rend/Util.cpp
+
 )
 if(MSVC)
   target_link_libraries(rend glew32 opengl32)
@@ -34,6 +35,7 @@ add_library(fodengine
  src/FODENGINE/Transform.h
  src/FODENGINE/Camera.cpp
  src/FODENGINE/Camera.h
+ src/FODENGINE/stb_image.h
 )
 target_link_libraries(fodengine SDL2 rend)
 
