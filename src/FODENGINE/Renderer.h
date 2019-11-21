@@ -24,11 +24,12 @@ class Renderer : public Component
 	std::sr1::shared_ptr<rend::Mesh> mesh;
 	std::sr1::shared_ptr<rend::Texture> tex;
 	float angle = 0;
+	bool ortho = false;
 
 public:
 	Renderer();
 	~Renderer();
-	void renderInit();
+	void renderInit(char* _shader, char* _model,char* _texture,bool _ortho);
 	virtual  void onDisplay();
 };
 
