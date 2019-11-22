@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(FODENGINE)
 
-include_directories(src)
+include_directories(src contrib)
 
 
 add_library(rend
@@ -16,7 +16,7 @@ add_library(rend
 
 )
 if(MSVC)
-  target_link_libraries(rend glew32 opengl32)
+  target_link_libraries(rend glew32 opengl32 OpenAL32)
 else()
   target_link_libraries(rend GLEW GL)
 endif()
@@ -35,9 +35,11 @@ add_library(fodengine
  src/FODENGINE/Transform.h
  src/FODENGINE/Camera.cpp
  src/FODENGINE/Camera.h
- src/FODENGINE/stb_image.h
+ src/FODENGINE/audioSource.h
+ src/FODENGINE/audioSource.cpp
+
 )
-target_link_libraries(fodengine SDL2 rend)
+target_link_libraries(fodengine SDL2 rend OpenAL32)
 
 add_executable(game
  src/game/main.cpp

@@ -57,7 +57,7 @@ void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ort
 
 		if (!f.is_open())
 		{
-			throw rend::Exception("Failed to open model");
+			throw rend::Exception("Failed to open shader");
 		}
 
 		std::string shade;
@@ -102,7 +102,7 @@ void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ort
 
 		if (!data)
 		{
-			throw rend::Exception("Failed to open image");
+			throw rend::Exception("Failed to open texture");
 		}
 
 		tex->setSize(w, h);
@@ -131,7 +131,7 @@ void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ort
 void Renderer::onDisplay()
 {
 
-	angle += 0.5f;
+	angle += 0.3f;
 
 	glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

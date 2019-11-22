@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "SDL2/SDL.h"
 #include "rend/rend.h"
+#include "audioSource.h"
 
 #include <iostream>
 #include <memory>
@@ -22,6 +23,8 @@ class Engine
 	
 	std::vector<std::shared_ptr<Entity>> entities;
 	SDL_Window* window;
+	ALCdevice* device;
+	ALCcontext* acontext;
 
 public:
 	std::sr1::shared_ptr<rend::Context> context;

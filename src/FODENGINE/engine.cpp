@@ -2,10 +2,13 @@
 
 
 #define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 768
+#define WINDOW_HEIGHT 760
 
 Engine::~Engine()
 {
+	alcMakeContextCurrent(NULL);
+	alcDestroyContext(acontext);
+	alcCloseDevice(device);
 	SDL_GL_DeleteContext(&context);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -28,7 +31,26 @@ std::shared_ptr<Engine> Engine::initialize()
 	{
 		throw rend::Exception("Window Failed To Initialise ");
 	}
-
+	//AL device
+	engine->device = alcOpenDevice(NULL);
+	
+	if (engine->device == NULL)
+	{
+		throw rend::Exception("Audio Device Is Null");
+	}
+	engine->acontext = alcCreateContext(engine->device, NULL);
+	if (engine->acontext == NULL)
+	{
+		alcCloseDevice(engine->device);
+		throw rend::Exception("Audio Context Failed");
+	}
+	if (!alcMakeContextCurrent(engine->acontext))
+	{
+		alcDestroyContext(engine->acontext);
+		alcCloseDevice(engine->device);
+		throw rend::Exception("Current Audio Context Failed");
+	}
+	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	engine->context = rend::Context::initialize();
 
 	return engine;
@@ -65,7 +87,8 @@ void Engine::start()
 		}
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-			(*it)->Update();		}
+			(*it)->Update();		
+		}
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
 			(*it)->Display();
