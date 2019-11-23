@@ -5,6 +5,7 @@
 #include <iostream>
 #include "SDL2/SDL.h"
 #include "GL/glew.h"
+#include "rend/rend.h"
 #include "glm/glm.hpp"
 
 class Entity;

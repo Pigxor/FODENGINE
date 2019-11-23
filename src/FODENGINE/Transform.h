@@ -1,3 +1,4 @@
+
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_
 
@@ -7,17 +8,23 @@
 class Transform : public Component
 {
 
-	glm::vec3 Position;
-	glm::vec3 Rotation;
-	glm::vec3 Scale;
+	glm::vec3 position;
+	float rotationY;
+	float rotationX;
+	float rotationZ;
+	glm::vec3 scale;
+	glm::mat4 model;
 
 public:
 
+	Transform();
 	void setPos(glm::vec3 pos);
+	void addPos(glm::vec3 pos);
 	glm::vec3 getPos();
-	void setRot(glm::vec3 rot);
-	glm::vec3 getRot();
-	void setScale(glm::vec3 scale);
+	void setRot(float rotX, float rotY, float rotZ);
+	void addRot(float rotX, float rotY, float rotZ);
+	float getRot();
+	void setScale(glm::vec3 _scale);
 	glm::vec3 getScale();
 	glm::mat4 getModel();
 };

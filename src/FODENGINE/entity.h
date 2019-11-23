@@ -1,10 +1,11 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
+#include "engine.h"
 #include <memory>
 #include <vector>
 #include <iostream>
-#include <rend/rend.h>
+
 
 class Engine;
 class Component;
@@ -18,23 +19,26 @@ class Entity
 	std::vector<std::shared_ptr<Component>> components;
 	virtual void Update();
 	virtual void Display();
+	
 
 public:
 	
 	template<class T>
 	std::shared_ptr<T> getComponent()
 	{
+		std::shared_ptr<T> rtn;
 		for (std::vector<std::shared_ptr<Component>>::iterator it = components.begin(); it != components.end(); it++)
 		{
-			std::shared_ptr<T> rtn = std::dynamic_pointer_cast<T>(*it);
-		}
-		if (rtn)
-		{
-			return rtn;
-		}
-		else
-		{
-			throw rend::Exception("Failed To Find Component Of Specified Type");
+			rtn = std::dynamic_pointer_cast<T>(*it);
+
+			if (rtn)
+			{
+				return rtn;
+			}
+			else
+			{
+				throw rend::Exception("Failed To Find Component Of Specified Type");
+			}
 		}
 	}
 

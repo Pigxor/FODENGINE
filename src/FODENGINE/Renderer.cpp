@@ -3,6 +3,8 @@
 #include "Renderer.h"
 #include "stb_image.h"
 
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 760
 
 
 //
@@ -39,16 +41,14 @@
 //"";
 
 
-Renderer::Renderer()
-{
-}
 
 Renderer::~Renderer()
 {
 }
 
-void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ortho)
+void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam)
 {
+	camera = cam;
 	ortho = _ortho;
 	std::sr1::shared_ptr<Engine> eng = getCore();
 	shader = eng->context->createShader();
@@ -131,20 +131,20 @@ void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ort
 void Renderer::onDisplay()
 {
 
-	angle += 0.3f;
+	std::sr1::shared_ptr<Entity> ent = getEntity();
+	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
+
+	transform->addRot(0, 0.003f, 0);
+	transform->setPos(glm::vec3(5, -2, 45));
+	transform->setScale(glm::vec3(2, 2, 2));
 
 	glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if (!ortho)
 	{
-		shader->setUniform("u_Projection", glm::perspective(glm::radians(65.0f), 1.0f, 0.1f, 100.0f));
+		shader->setUniform("u_Projection", camera->getProjection());
 	}
-	shader->setUniform("u_Model",
-		glm::rotate(glm::mat4(1.0f), glm::radians(10.0f), glm::vec3(1, 0, 0)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0, 1, 0)) *
-		glm::translate(glm::mat4(1.0f), glm::vec3(5, -2, 45))
-	);
-
+	shader->setUniform("u_Model", transform->getModel());
 	shader->setMesh(mesh);
 	shader->render();
 }

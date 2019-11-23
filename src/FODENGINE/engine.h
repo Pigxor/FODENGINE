@@ -7,6 +7,8 @@
 #include "SDL2/SDL.h"
 #include "rend/rend.h"
 #include "audioSource.h"
+#include "Transform.h"
+#include "Camera.h"
 
 #include <iostream>
 #include <memory>
