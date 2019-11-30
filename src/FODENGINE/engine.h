@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "component.h"
 #include "Renderer.h"
+#include "pbr.h"
 #include "SDL2/SDL.h"
 #include "rend/rend.h"
 #include "audioSource.h"
@@ -22,13 +23,17 @@ class Engine
 
 
 	std::weak_ptr<Engine> self;
+	float lastT;
+	float T;
 	
+	float diff;
 	std::vector<std::shared_ptr<Entity>> entities;
 	SDL_Window* window;
 	ALCdevice* device;
 	ALCcontext* acontext;
 
 public:
+	float deltaT;
 	std::sr1::shared_ptr<rend::Context> context;
 	~Engine();
 	static std::shared_ptr<Engine> initialize();

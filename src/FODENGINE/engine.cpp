@@ -18,6 +18,7 @@ std::shared_ptr<Engine> Engine::initialize()
 {
 	std::shared_ptr<Engine> engine = std::make_shared<Engine>();
 	engine->self = engine;
+	engine->lastT = SDL_GetTicks();
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		throw rend::Exception("SDL Failed To Initialise ");
@@ -77,6 +78,9 @@ void Engine::start()
 
 	while (!quit)
 	{
+		T = SDL_GetTicks();
+		diff = T - lastT;
+		deltaT = diff / 2000;
 		SDL_Event event = { 0 };
 		while (SDL_PollEvent(&event))
 		{
@@ -94,6 +98,7 @@ void Engine::start()
 			(*it)->Display();
 		}
 		SDL_GL_SwapWindow(window);
+		lastT = T;
 	}
 }
 

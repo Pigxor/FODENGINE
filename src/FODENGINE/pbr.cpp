@@ -1,53 +1,31 @@
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "Renderer.h"
+#include "pbr.h"
 #include "stb_image.h"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 760
 
-
-//
-//const GLfloat positions[] = {
-//  0.0f, 0.5f, 0.0f,
-//  -0.5f, -0.5f, 0.0f,
-//  0.5f, -0.5f, 0.0f
-//};
-//
-//const GLfloat colors[] = {
-//  1.0f, 0.0f, 0.0f, 1.0f,
-//  0.0f, 1.0f, 0.0f, 1.0f,
-//  0.0f, 0.0f, 1.0f, 1.0f
-//};
-//const GLchar *vertexShaderSrc =
-//"attribute vec3 in_Position;" \
-//"attribute vec4 in_Color;" \
-//"" \
-//"varying vec4 ex_Color;" \
-//"" \
-//"void main()" \
-//"{" \
-//"  gl_Position = vec4(in_Position, 1.0);" \
-//"  ex_Color = in_Color;" \
-//"}" \
-//"";
-//
-//const GLchar *fragmentShaderSrc =
-//"varying vec4 ex_Color;" \
-//"void main()" \
-//"{" \
-//"  gl_FragColor = ex_Color;" \
-//"}" \
-//"";
-
-
-
-Renderer::~Renderer()
+PBR::~PBR()
 {
+	lightPos[0] = glm::vec3(-20.0f, 20.0f, 20.0f);
+	lightPos[1] = glm::vec3(20.0f, 20.0f, 20.0f);
+	lightPos[2] = glm::vec3(-20.0f, -20.0f, 20.0f);
+	lightPos[3] = glm::vec3(20.0f, -20.0f, 20.0f) ;
+	
+	lightColour[0] = glm::vec3(300.0f, 300.0f, 300.0f);
+	lightColour[1] = glm::vec3(300.0f, 300.0f, 300.0f);
+	lightColour[2] = glm::vec3(300.0f, 300.0f, 300.0f);
+	lightColour[3] = glm::vec3(300.0f, 300.0f, 300.0f);
 }
 
-void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam)
+void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, float _metallic, float _roughness, float _ao, glm::vec3 _albedo)
 {
+	metallic = _metallic;
+	roughness - _roughness;
+	ao = _ao;
+	albedo = _albedo;
+
 	camera = cam;
 	ortho = _ortho;
 	std::sr1::shared_ptr<Engine> eng = getCore();
@@ -124,26 +102,37 @@ void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ort
 
 
 		mesh->setTexture("u_Texture", tex);
-
+		
 	}
 }
 
-void Renderer::onDisplay()
+void PBR::onDisplay()
 {
-
+	std::sr1::shared_ptr<Engine> eng = getCore();
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 
-	transform->addRot(0, 0.003f, 0);
-	transform->setPos(glm::vec3(5, -2, 45));
-	transform->setScale(glm::vec3(1, 1, 1));
-
 	glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	if (!ortho)
+
+	shader->setUniform("u_Projection", camera->getProjection());
+	shader->setUniform("u_View", camera->getView());
+	shader->setUniform("camPos", camera->getPos());
+	shader->setUniform("albedo", albedo);
+	shader->setUniform("metallic", metallic);
+	shader->setUniform("roughness", roughness);
+	shader->setUniform("ao", ao);
+
+	for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
 	{
-		shader->setUniform("u_Projection", camera->getProjection());
+		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*5.0f) * 5.0, 0.0, 0.0);
+		lightPos[i] = newPos;	
+		shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
+		shader->setUniform("lightPos[" + std::to_string(i) + "]", newPos);
+		
+
 	}
+
 	shader->setUniform("u_Model", transform->getModel());
 	shader->setMesh(mesh);
 	shader->render();

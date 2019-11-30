@@ -37,7 +37,8 @@ add_library(fodengine
  src/FODENGINE/Camera.h
  src/FODENGINE/audioSource.h
  src/FODENGINE/audioSource.cpp
-
+ src/FODENGINE/pbr.cpp
+ src/FODENGINE/pbr.h
 )
 target_link_libraries(fodengine SDL2 rend OpenAL32)
 

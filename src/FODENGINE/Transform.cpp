@@ -7,7 +7,7 @@ Transform::Transform()
 	rotationX = 0;
 	rotationZ = 0;
 	scale = glm::vec3(1.0f,1.0f,1.0f);
-	model = glm::mat4(1.0f); //NOT AN IDENTITY MATRIX
+	model = glm::mat4(1.0f);	
 
 }
 
@@ -57,9 +57,12 @@ glm::vec3 Transform::getScale()
 
 glm::mat4 Transform::getModel()
 {
-	model = glm::scale(model, scale);
-	model = glm::rotate(glm::mat4(1.0f), glm::radians(rotationX), glm::vec3(1, 0, 0)) * glm::rotate(glm::mat4(1.0f), glm::radians(rotationY), glm::vec3(0, 1, 0)) * glm::rotate(glm::mat4(1.0f), glm::radians(rotationZ), glm::vec3(0, 0, 1));
+	model = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(rotationX), glm::vec3(1, 0, 0));
+	model = glm::rotate(model, glm::radians(rotationY), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, glm::radians(rotationZ), glm::vec3(0, 0, 1));
 	model = glm::translate(model, position);
+	model = glm::scale(model, scale);
 
 	return model;
 }
