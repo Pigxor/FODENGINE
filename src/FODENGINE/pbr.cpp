@@ -6,23 +6,23 @@
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 760
 
-PBR::~PBR()
+PBR::PBR()
 {
-	lightPos[0] = glm::vec3(-20.0f, 20.0f, 20.0f);
-	lightPos[1] = glm::vec3(20.0f, 20.0f, 20.0f);
-	lightPos[2] = glm::vec3(-20.0f, -20.0f, 20.0f);
-	lightPos[3] = glm::vec3(20.0f, -20.0f, 20.0f) ;
+	lightPos[0] = glm::vec3(-5, 2, 5);
+	lightPos[1] = glm::vec3(10, 0, 5);
+	lightPos[2] = glm::vec3(10, 0, 5);
+	lightPos[3] = glm::vec3(10, 0, 5);
 	
-	lightColour[0] = glm::vec3(300.0f, 300.0f, 300.0f);
-	lightColour[1] = glm::vec3(300.0f, 300.0f, 300.0f);
-	lightColour[2] = glm::vec3(300.0f, 300.0f, 300.0f);
-	lightColour[3] = glm::vec3(300.0f, 300.0f, 300.0f);
+	lightColour[0] = glm::vec3(100, 100, 100); //strength
+	lightColour[1] = glm::vec3(0,0, 0);
+	lightColour[2] = glm::vec3(0,0, 0);
+	lightColour[3] = glm::vec3(0, 0, 0);
 }
 
 void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, float _metallic, float _roughness, float _ao, glm::vec3 _albedo)
 {
 	metallic = _metallic;
-	roughness - _roughness;
+	roughness = _roughness;
 	ao = _ao;
 	albedo = _albedo;
 
@@ -125,16 +125,19 @@ void PBR::onDisplay()
 
 	for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
 	{
-		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*5.0f) * 5.0, 0.0, 0.0);
-		lightPos[i] = newPos;	
+		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.2f) * 5.0, 0.0, 0.0);
+		//lightPos[i] = newPos;	
 		shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
-		shader->setUniform("lightPos[" + std::to_string(i) + "]", newPos);
-		
+		shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
+	
 
 	}
-
 	shader->setUniform("u_Model", transform->getModel());
 	shader->setMesh(mesh);
 	shader->render();
+
+	
 }
+
+
 

@@ -38,9 +38,10 @@ class PBR : public Component
 
 public:
 
-	~PBR();
+	PBR();
 	void renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, float _metallic, float _roughness, float _ao, glm::vec3 _albedo);
 	virtual  void onDisplay();
+
 };
 
 #endif#pragma once
