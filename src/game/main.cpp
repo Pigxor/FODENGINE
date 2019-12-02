@@ -17,8 +17,8 @@ int main()
 	std::shared_ptr<Transform> transform = entity->addComponent<Transform>();
 	transform->setPos(glm::vec3(0, -0.5, 0));
 	transform->setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-	std::shared_ptr<PBR> component = entity->addComponent<PBR>();												//metal roughness ao albedo
-	component->renderInit("../shaders/PBRShader.txt", "../models/pbrSphere.obj", "../models/grey.png", false, cam,0.0f, 1.0f, 1.0f, glm::vec3(0.1,0.1,0.1));
+	std::shared_ptr<PBR> component = entity->addComponent<PBR>();							//originalTex					                                                     //metal roughness ao albedo normal
+	component->renderInit("../shaders/PBRShader.txt", "../models/pbrSphere.obj", "../models/albedoMap.png", false, cam, "../models/metallicMap.png", "../models/roughnessMap.png", "../models/grey.png", "../models/albedoMap.png","../models/normalMap.png");
 	
 	//std::shared_ptr<Renderer> component = entity->addComponent<Renderer>();
 	//component->renderInit("../shaders/basicShader.txt", "../models/graveyard.obj", "../models/graveyard.png",false,cam);

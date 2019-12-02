@@ -8,23 +8,23 @@
 
 PBR::PBR()
 {
-	lightPos[0] = glm::vec3(-5, 2, 5);
+	lightPos[0] = glm::vec3(-10, 0, 2);
 	lightPos[1] = glm::vec3(10, 0, 5);
 	lightPos[2] = glm::vec3(10, 0, 5);
 	lightPos[3] = glm::vec3(10, 0, 5);
 	
-	lightColour[0] = glm::vec3(100, 100, 100); //strength
+	lightColour[0] = glm::vec3(300, 300, 300); //strength
 	lightColour[1] = glm::vec3(0,0, 0);
 	lightColour[2] = glm::vec3(0,0, 0);
 	lightColour[3] = glm::vec3(0, 0, 0);
 }
 
-void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, float _metallic, float _roughness, float _ao, glm::vec3 _albedo)
+void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal)
 {
-	metallic = _metallic;
-	roughness = _roughness;
-	ao = _ao;
-	albedo = _albedo;
+	//metallic = _metallic;
+	//roughness = _roughness;
+	//ao = _ao;
+	//albedo = _albedo;
 
 	camera = cam;
 	ortho = _ortho;
@@ -69,13 +69,65 @@ void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, s
 
 		mesh->parse(obj);
 	}
-	tex = eng->context->createTexture();
+	tex = makeTexture(_texture);
+	norm = makeTexture(_normal);
+	met = makeTexture(_metallic);
+	ruf = makeTexture(_roughness);
+	alb = makeTexture(_albedo);
+	ao = makeTexture(_ao);
+
+	mesh->setTexture("u_Texture", tex);
+	mesh->setTexture("normalM", norm);
+	mesh->setTexture("metallicM", met);
+	mesh->setTexture("roughnessM", ruf);
+	mesh->setTexture("albedoM", alb);
+	mesh->setTexture("aoM", ao);
+
+}
+
+void PBR::onDisplay()
+{
+	std::sr1::shared_ptr<Engine> eng = getCore();
+	std::sr1::shared_ptr<Entity> ent = getEntity();
+	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
+
+	glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	shader->setUniform("u_Projection", camera->getProjection());
+	shader->setUniform("u_View", camera->getView());
+	shader->setUniform("camPos", camera->getPos());
+	//shader->setUniform("albedo", albedo);
+	//shader->setUniform("metallic", metallic);
+	//shader->setUniform("roughness", roughness);
+	//shader->setUniform("ao", ao);
+
+	for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
+	{
+		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.5f) * 5.0, 0.0, 0.0);
+		lightPos[i] = newPos;	
+		shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
+		shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
+	
+
+	}
+	shader->setUniform("u_Model", transform->getModel());
+	shader->setMesh(mesh);
+	shader->render();
+
+	
+}
+
+std::sr1::shared_ptr<rend::Texture> PBR::makeTexture(const char * _filePath)
+{
+	std::sr1::shared_ptr<Engine> eng = getCore();
+	std::sr1::shared_ptr<rend::Texture> tex = eng->context->createTexture();
 	{
 		int w = 0;
 		int h = 0;
 		int bpp = 0;
 
-		unsigned char* data = stbi_load(_texture,
+		unsigned char* data = stbi_load(_filePath,
 			&w, &h, &bpp, 3);
 
 		if (!data)
@@ -99,44 +151,8 @@ void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, s
 		}
 
 		stbi_image_free(data);
-
-
-		mesh->setTexture("u_Texture", tex);
-		
 	}
-}
-
-void PBR::onDisplay()
-{
-	std::sr1::shared_ptr<Engine> eng = getCore();
-	std::sr1::shared_ptr<Entity> ent = getEntity();
-	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
-
-	glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	shader->setUniform("u_Projection", camera->getProjection());
-	shader->setUniform("u_View", camera->getView());
-	shader->setUniform("camPos", camera->getPos());
-	shader->setUniform("albedo", albedo);
-	shader->setUniform("metallic", metallic);
-	shader->setUniform("roughness", roughness);
-	shader->setUniform("ao", ao);
-
-	for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
-	{
-		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.2f) * 5.0, 0.0, 0.0);
-		//lightPos[i] = newPos;	
-		shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
-		shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
-	
-
-	}
-	shader->setUniform("u_Model", transform->getModel());
-	shader->setMesh(mesh);
-	shader->render();
-
-	
+	return tex;
 }
 
 

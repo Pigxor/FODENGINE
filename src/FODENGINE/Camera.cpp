@@ -28,6 +28,6 @@ glm::mat4 Camera::getView()
 
 glm::mat4 Camera::getProjection()
 {
-	projectMat = glm::perspective(glm::radians(angle), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 1000.0f);
+	projectMat = glm::perspective(glm::radians(angle), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 	return projectMat;
 }
