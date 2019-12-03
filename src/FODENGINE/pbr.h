@@ -21,13 +21,18 @@ class PBR : public Component
 	GLuint programId;
 	GLuint vaoId;
 	std::sr1::shared_ptr<rend::Shader> shader;
+	std::sr1::shared_ptr<rend::Shader> cubeShader;
 	std::sr1::shared_ptr<rend::Mesh> mesh;
+	std::sr1::shared_ptr<rend::Mesh> cubeMesh;
 	std::sr1::shared_ptr<rend::Texture> tex;
 	std::sr1::shared_ptr<rend::Texture> norm;
 	std::sr1::shared_ptr<rend::Texture> alb;
 	std::sr1::shared_ptr<rend::Texture> met;
 	std::sr1::shared_ptr<rend::Texture> ruf;
 	std::sr1::shared_ptr<rend::Texture> ao;
+
+
+	std::sr1::shared_ptr<rend::Texture> cubeTex;
 
 	std::sr1::shared_ptr<Camera> camera;
 
@@ -48,6 +53,8 @@ public:
 	void renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal);
 	virtual  void onDisplay();
 	std::sr1::shared_ptr<rend::Texture> makeTexture(const char* _filePath);
+	void cubemapInit(char* _hdrFile, char* _cubeShader, char* _skybox);
+
 };
 
 #endif#pragma once

@@ -58,8 +58,9 @@ glm::vec3 Transform::getScale()
 glm::mat4 Transform::getModel()
 {
 	model = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(rotationX), glm::vec3(1, 0, 0));
+	//model = glm::translate(model, glm::vec3(0,0,0));
 	model = glm::rotate(model, glm::radians(rotationY), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, glm::radians(rotationX), glm::vec3(1, 0, 0));
 	model = glm::rotate(model, glm::radians(rotationZ), glm::vec3(0, 0, 1));
 	model = glm::translate(model, position);
 	model = glm::scale(model, scale);

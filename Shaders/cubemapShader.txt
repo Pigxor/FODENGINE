@@ -1,0 +1,52 @@
+
+#ifdef VERTEX                            
+                                             
+attribute vec3 a_Position;                           
+attribute vec2 a_TexCoord;
+attribute vec3 a_Normal;              
+                                             
+uniform mat4 u_Projection;                    
+ 
+uniform mat4 u_View;                    
+                                                 
+varying vec3 v_Position; 
+varying vec2 v_TexCoord;           
+varying vec3 v_Normal;                                
+void main()                                
+{            
+  v_TexCoord = a_TexCoord;
+  v_Position = a_Position; 
+  v_Normal = a_Normal;                                 
+  gl_Position = u_Projection * u_View * vec4(v_Position, 1);           
+                                                                   
+         
+}                                            
+                                             
+#endif                                      
+#ifdef FRAGMENT                            
+varying vec3 v_Position;
+varying vec2 v_TexCoord;
+varying vec3 v_Normal;
+
+uniform sampler2D cubeMap;
+const vec2 invAtan = vec2(0.1591,0.3183);
+vec2 SampleSphericalMap(vec3 v);                                     
+                                              
+void main()                                   
+{         
+vec4 tex = texture2D(cubeMap, v_TexCoord); 
+vec2 uv = SampleSphericalMap(normalize(v_Position));
+vec3 colour = texture2D(cubeMap,uv).rgb;
+gl_FragColor = tex * vec4(colour,1.0);
+if(gl_FragColor.x == 9) gl_FragColor.x = v_Normal.x;   
+}  
+   
+vec2 SampleSphericalMap(vec3 v)
+{
+vec2 uv = vec2 (atan(v.z,v.x), asin(v.y));
+uv *= invAtan;
+uv += 0.5;
+return uv;
+}                                           
+                                
+#endif                                       

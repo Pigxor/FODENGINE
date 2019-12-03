@@ -78,6 +78,8 @@ void Engine::start()
 
 	while (!quit)
 	{
+		glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		T = SDL_GetTicks();
 		diff = T - lastT;
 		deltaT = diff / 2000;

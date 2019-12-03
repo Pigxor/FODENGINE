@@ -91,8 +91,7 @@ void PBR::onDisplay()
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 
-	glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 	shader->setUniform("u_Projection", camera->getProjection());
 	shader->setUniform("u_View", camera->getView());
@@ -120,6 +119,7 @@ void PBR::onDisplay()
 
 std::sr1::shared_ptr<rend::Texture> PBR::makeTexture(const char * _filePath)
 {
+	stbi_set_flip_vertically_on_load(true);
 	std::sr1::shared_ptr<Engine> eng = getCore();
 	std::sr1::shared_ptr<rend::Texture> tex = eng->context->createTexture();
 	{
@@ -153,6 +153,94 @@ std::sr1::shared_ptr<rend::Texture> PBR::makeTexture(const char * _filePath)
 		stbi_image_free(data);
 	}
 	return tex;
+}
+
+void PBR::cubemapInit(char * _hdrFile, char* _cubeShader, char* _skybox)
+{
+	////cubemap shader
+	//std::sr1::shared_ptr<Engine> eng = getCore();
+	//std::sr1::shared_ptr<Entity> ent = getEntity();
+	//std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
+	//cubeShader = eng->context->createShader();
+	//{
+	//	std::ifstream f(_cubeShader);
+
+	//	if (!f.is_open())
+	//	{
+	//		throw rend::Exception("Failed to open shader");
+	//	}
+
+	//	std::string shade;
+	//	std::string line;
+
+	//	while (!f.eof())
+	//	{
+	//		std::getline(f, line);
+	//		shade += line + "\n";
+	//	}
+
+	//	cubeShader->parse(shade);
+	//}
+	////cubemap image
+	//cubeTex = makeTexture(_hdrFile);
+	////stbi_set_flip_vertically_on_load(true);
+	////int w, h, compNo;
+	////float  *data = stbi_loadf(_hdrFile, &w, &h, &compNo, 0);
+	////unsigned int hdrTexture;
+	////if (data)
+	////{
+	////	glGenTextures(1, &hdrTexture);
+	////	glBindTexture(GL_TEXTURE_2D, hdrTexture);
+	////	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, w, h, 0, GL_RGB, GL_FLOAT, data);
+	////	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	////	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	////	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	////	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	////	stbi_image_free(data);
+	////}
+	//glm::mat4 cubeProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+	//cubeMesh = eng->context->createMesh();
+
+	//glm::mat4 captureViews[] =
+	//{
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+	//};
+	////cubeShader->setUniform("cubeMap", cubeTex);
+	//{
+	//	std::ifstream f(_skybox);
+
+	//	if (!f.is_open())
+	//	{
+	//		throw rend::Exception("Failed to open model");
+	//	}
+
+	//	std::string obj;
+	//	std::string line;
+
+	//	while (!f.eof())
+	//	{
+	//		std::getline(f, line);
+	//		obj += line + "\n";
+	//	}
+
+	//	cubeMesh->parse(obj);
+	//}
+	//cubeMesh->setTexture("cubeMap", cubeTex);
+	//cubeShader->setUniform("u_Model", transform.GetModel())
+	//cubeShader->setMesh(cubeMesh);
+	//cubeShader->setUniform("u_Projection", cubeProjection);
+	//for (unsigned int i = 0; i < 6; ++i)
+	//{
+	//	cubeShader->setUniform("u_View", captureViews[i]);
+
+	//	cubeShader->render();
+	//}
+
 }
 
 

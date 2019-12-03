@@ -375,7 +375,7 @@ void Shader::parse(const std::string& source)
     std::string msg = &infoLog.at(0);
 	std::cout << msg;
     throw Exception(msg);
-  }
+	  }
 
   glAttachShader(id, vertId);
   pollForError();
