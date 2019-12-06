@@ -39,6 +39,8 @@ add_library(fodengine
  src/FODENGINE/audioSource.cpp
  src/FODENGINE/pbr.cpp
  src/FODENGINE/pbr.h
+ src/FODENGINE/cubemap.cpp
+ src/FODENGINE/cubemap.h
 )
 target_link_libraries(fodengine SDL2 rend OpenAL32)
 

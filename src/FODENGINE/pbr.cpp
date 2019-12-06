@@ -8,7 +8,7 @@
 
 PBR::PBR()
 {
-	lightPos[0] = glm::vec3(-10, 0, 2);
+	lightPos[0] = glm::vec3(-15, 0, 2);
 	lightPos[1] = glm::vec3(10, 0, 5);
 	lightPos[2] = glm::vec3(10, 0, 5);
 	lightPos[3] = glm::vec3(10, 0, 5);
@@ -19,7 +19,7 @@ PBR::PBR()
 	lightColour[3] = glm::vec3(0, 0, 0);
 }
 
-void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal)
+void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal)
 {
 	//metallic = _metallic;
 	//roughness = _roughness;
@@ -27,6 +27,8 @@ void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, s
 	//albedo = _albedo;
 
 	camera = cam;
+	cameraRenderTex = camRT;
+
 	ortho = _ortho;
 	std::sr1::shared_ptr<Engine> eng = getCore();
 	shader = eng->context->createShader();
@@ -103,7 +105,7 @@ void PBR::onDisplay()
 
 	for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
 	{
-		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.5f) * 5.0, 0.0, 0.0);
+		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.3f) * 5.0, 0.0, 0.0);
 		lightPos[i] = newPos;	
 		shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
 		shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
@@ -112,9 +114,26 @@ void PBR::onDisplay()
 	}
 	shader->setUniform("u_Model", transform->getModel());
 	shader->setMesh(mesh);
-	shader->render();
 
+	if (cameraRenderTex->getRenderTarget() != NULL)
+	{
+		shader->render(cameraRenderTex->getRenderTarget());
+	}
+	else
+	{
+		shader->render();
+	}
 	
+	//THIS NEEDS WORK --  run through ach skybox camera
+	if (camera->getRenderTarget() != NULL)
+	{
+		shader->render(camera->getRenderTarget());
+	}
+	else
+	{
+		shader->render();
+	}
+
 }
 
 std::sr1::shared_ptr<rend::Texture> PBR::makeTexture(const char * _filePath)

@@ -35,6 +35,7 @@ class PBR : public Component
 	std::sr1::shared_ptr<rend::Texture> cubeTex;
 
 	std::sr1::shared_ptr<Camera> camera;
+	std::sr1::shared_ptr<Camera> cameraRenderTex;
 
 	//glm::vec3 albedo;
 	//float metallic;
@@ -50,7 +51,7 @@ class PBR : public Component
 public:
 
 	PBR();
-	void renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal);
+	void renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal);
 	virtual  void onDisplay();
 	std::sr1::shared_ptr<rend::Texture> makeTexture(const char* _filePath);
 	void cubemapInit(char* _hdrFile, char* _cubeShader, char* _skybox);

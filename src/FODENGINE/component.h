@@ -21,6 +21,7 @@ protected:
 	virtual void onStart();
 	virtual void onUpdate();
 	virtual void onDisplay();
+	//onInit();
 public:
 
 	std::shared_ptr<Engine> getCore();
