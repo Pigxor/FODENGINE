@@ -32,6 +32,7 @@ public:
 
 	~Renderer();
 	void renderInit(char* _shader, char* _model,char* _texture,bool _ortho, std::shared_ptr<Camera> cam);
+	std::sr1::shared_ptr<rend::Mesh> getMesh();
 	virtual  void onDisplay();
 };
 

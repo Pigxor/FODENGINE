@@ -1,4 +1,4 @@
-#define STB_IMAGE_IMPLEMENTATION
+
 
 #include "Renderer.h"
 #include "stb_image.h"
@@ -48,6 +48,7 @@ Renderer::~Renderer()
 
 void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam)
 {
+	stbi_set_flip_vertically_on_load(true);
 	camera = cam;
 	ortho = _ortho;
 	std::sr1::shared_ptr<Engine> eng = getCore();
@@ -128,6 +129,11 @@ void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ort
 	}
 }
 
+std::sr1::shared_ptr<rend::Mesh> Renderer::getMesh()
+{
+	return mesh;
+}
+
 void Renderer::onDisplay()
 {
 
@@ -135,11 +141,11 @@ void Renderer::onDisplay()
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 
 	transform->addRot(0, 0.003f, 0);
-	transform->setPos(glm::vec3(5, -2, 45));
-	transform->setScale(glm::vec3(1, 1, 1));
+	//transform->setPos(glm::vec3(5, -2, 45));
+	//transform->setScale(glm::vec3(1, 1, 1));
 
-	glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	/*glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 	if (!ortho)
 	{
 		shader->setUniform("u_Projection", camera->getProjection());

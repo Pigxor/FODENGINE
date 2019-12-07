@@ -11,7 +11,7 @@
 #include <fstream>
 
 class Camera;
-
+class Renderer;
 
 
 class PBR : public Component
@@ -30,7 +30,9 @@ class PBR : public Component
 	std::sr1::shared_ptr<rend::Texture> met;
 	std::sr1::shared_ptr<rend::Texture> ruf;
 	std::sr1::shared_ptr<rend::Texture> ao;
+	std::sr1::shared_ptr<rend::Texture> IMap;
 
+	std::sr1::shared_ptr<Renderer> skybox;
 
 	std::sr1::shared_ptr<rend::Texture> cubeTex;
 
@@ -51,7 +53,7 @@ class PBR : public Component
 public:
 
 	PBR();
-	void renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal);
+	void renderInit(char* _shader, char* _model, char* _texture, std::shared_ptr<Renderer> _skybox, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal, char* _imap);
 	virtual  void onDisplay();
 	std::sr1::shared_ptr<rend::Texture> makeTexture(const char* _filePath);
 	void cubemapInit(char* _hdrFile, char* _cubeShader, char* _skybox);

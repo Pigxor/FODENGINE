@@ -1,4 +1,3 @@
-#define STB_IMAGE_IMPLEMENTATION
 
 #include "pbr.h"
 #include "stb_image.h"
@@ -19,17 +18,17 @@ PBR::PBR()
 	lightColour[3] = glm::vec3(0, 0, 0);
 }
 
-void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal)
+void PBR::renderInit(char* _shader, char* _model, char* _texture, std::shared_ptr<Renderer> _skybox, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal, char* _imap)
 {
 	//metallic = _metallic;
 	//roughness = _roughness;
 	//ao = _ao;
 	//albedo = _albedo;
-
+	skybox = _skybox;
 	camera = cam;
 	cameraRenderTex = camRT;
 
-	ortho = _ortho;
+	//ortho = _ortho;
 	std::sr1::shared_ptr<Engine> eng = getCore();
 	shader = eng->context->createShader();
 	{
@@ -77,7 +76,9 @@ void PBR::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, s
 	ruf = makeTexture(_roughness);
 	alb = makeTexture(_albedo);
 	ao = makeTexture(_ao);
+	IMap = makeTexture(_imap);
 
+	mesh->setTexture("IMap", IMap);
 	mesh->setTexture("u_Texture", tex);
 	mesh->setTexture("normalM", norm);
 	mesh->setTexture("metallicM", met);
@@ -92,9 +93,10 @@ void PBR::onDisplay()
 	std::sr1::shared_ptr<Engine> eng = getCore();
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
+	
+	transform->addRot(0, 0.003, 0);
 
-
-
+	//shader->setMesh("skyMesh", skybox->getMesh());
 	shader->setUniform("u_Projection", camera->getProjection());
 	shader->setUniform("u_View", camera->getView());
 	shader->setUniform("camPos", camera->getPos());
@@ -103,7 +105,7 @@ void PBR::onDisplay()
 	//shader->setUniform("roughness", roughness);
 	//shader->setUniform("ao", ao);
 
-	for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
+	/*for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
 	{
 		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.3f) * 5.0, 0.0, 0.0);
 		lightPos[i] = newPos;	
@@ -111,8 +113,9 @@ void PBR::onDisplay()
 		shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
 	
 
-	}
+	}*/
 	shader->setUniform("u_Model", transform->getModel());
+	shader->setMesh(skybox->getMesh());
 	shader->setMesh(mesh);
 
 	if (cameraRenderTex->getRenderTarget() != NULL)
