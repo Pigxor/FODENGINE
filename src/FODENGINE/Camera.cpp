@@ -20,7 +20,9 @@ glm::vec3 Camera::getPos()
 
 void Camera::onUpdate()
 {
-	
+	std::sr1::shared_ptr<Entity> ent = getEntity();
+	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
+	transform->addRot(0, -0.005, 0);
 }
 
 glm::mat4 Camera::getView()

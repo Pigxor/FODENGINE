@@ -140,10 +140,8 @@ void Renderer::onDisplay()
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 
-	transform->addRot(0, 0.003f, 0);
-	//transform->setPos(glm::vec3(5, -2, 45));
-	//transform->setScale(glm::vec3(1, 1, 1));
 
+	shader->setUniform("u_View", camera->getView());
 	/*glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 	if (!ortho)

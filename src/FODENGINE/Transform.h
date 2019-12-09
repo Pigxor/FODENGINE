@@ -4,6 +4,7 @@
 
 #include "component.h"
 
+class Camera;
 
 class Transform : public Component
 {
@@ -26,6 +27,7 @@ public:
 	float getRot();
 	void setScale(glm::vec3 _scale);
 	glm::vec3 getScale();
+	glm::mat4 getModel(std::shared_ptr<Camera> cam);
 	glm::mat4 getModel();
 };
 
