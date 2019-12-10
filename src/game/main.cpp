@@ -31,18 +31,18 @@ int main()
 
 	//Rusty Ball
 	std::shared_ptr<Transform> transform = entity->addComponent<Transform>();		
-	transform->setPos(glm::vec3(0, 0,0));
+	transform->setPos(glm::vec3(0, 0,-3));
 	transform->setScale(glm::vec3(1,1,1));
 	std::shared_ptr<PBR> component = entity->addComponent<PBR>();							//originalTex					                                                     //metal roughness ao albedo normal
 	component->renderInit("../shaders/renameShader.txt", "../models/pbrSphere.obj", "../models/albedoMap.png", skycomponent, cam,camRT, "../models/metallicMap.png", "../models/roughnessMap.png", "../models/white.png", "../models/albedoMap.png","../models/normalMap.png", "../models/roadIMap.jpg");
 	//White Ball
 	std::shared_ptr<Entity> entity2 = engine->addEntity();
 	std::shared_ptr<Transform> transform2 = entity2->addComponent<Transform>();
-	transform2->setPos(glm::vec3(3, 0, -3));
+	transform2->setPos(glm::vec3(3, 0, 0));
 	transform2->setScale(glm::vec3(1, 1, 1));
 	transform2->setRot(0, 0, 0);
 	std::shared_ptr<PBR> component2 = entity2->addComponent<PBR>();							//originalTex					              //metal               roughness                   ao                  albedo                       normal
-	component2->renderInit("../shaders/renameShader.txt", "../models/pbrSphere.obj", "../models/metalA.jpg", skycomponent, cam, camRT, "../models/white.png", "../models/white.png", "../models/white.png", "../models/white.png", "../models/normalMap.png", "../models/roadIMap.jpg");
+	component2->renderInit("../shaders/renameShader.txt", "../models/pbrSphere.obj", "../models/white.png", skycomponent, cam, camRT, "../models/white.png", "../models/white.png", "../models/black.png", "../models/white.png", "../models/normalMap.png", "../models/roadIMap.jpg");
 
 
 	//std::shared_ptr<audioSource> audio = entity->addComponent<audioSource>();

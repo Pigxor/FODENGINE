@@ -22,7 +22,7 @@ void Camera::onUpdate()
 {
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
-	transform->addRot(0, -0.6, 0);
+	transform->addRot(0, -0.4, 0);
 }
 
 glm::mat4 Camera::getView()
