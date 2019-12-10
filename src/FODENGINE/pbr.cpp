@@ -18,7 +18,7 @@ PBR::PBR()
 	lightColour[3] = glm::vec3(0, 0, 0);
 }
 
-void PBR::renderInit(char* _shader, char* _model, char* _texture, std::shared_ptr<Transform> _skybox, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal, char* _imap)
+void PBR::renderInit(char* _shader, char* _model, char* _texture, std::shared_ptr<Renderer> _skybox, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal, char* _imap)
 {
 	//metallic = _metallic;
 	//roughness = _roughness;
@@ -68,7 +68,7 @@ void PBR::renderInit(char* _shader, char* _model, char* _texture, std::shared_pt
 			obj += line + "\n";
 		}
 
-		mesh->parse(obj);
+		mesh->parse(obj,false);
 	}
 	tex = makeTexture(_texture);
 	norm = makeTexture(_normal);
@@ -94,9 +94,9 @@ void PBR::onDisplay()
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 	
-	//transform->addRot(0, 0.003, 0);
+	//transform->addRot(0, 1, 0);u_M
 
-	//shader->setUniform("skyPos", skybox->getModel());
+	//shader->setUniform("sky_Model", skybox->getEntity()->getComponent<Transform>()->getModel());
 	shader->setUniform("u_Projection", camera->getProjection());
 	shader->setUniform("u_View", camera->getView());
 	shader->setUniform("camPos", camera->getPos());
@@ -104,16 +104,16 @@ void PBR::onDisplay()
 	//shader->setUniform("metallic", metallic);
 	//shader->setUniform("roughness", roughness);
 	//shader->setUniform("ao", ao);
-	/*for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
-	{
-		glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.3f) * 5.0, 0.0, 0.0);
-		lightPos[i] = newPos;	
-		shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
-		shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
-	
-
-	}*/
-	shader->setUniform("u_Model", transform->getModel());
+	//for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
+	//{
+	//	glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.3f) * 5.0, 0.0, 0.0);
+	//	lightPos[i] = newPos;	
+	//	shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
+	//	shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
+	//
+	//}
+	shader->setUniform("u_Model", transform->getModel(camera));
+	//shader->setMesh(skybox->getMesh());
 	shader->setMesh(mesh);
 
 	if (cameraRenderTex->getRenderTarget() != NULL)

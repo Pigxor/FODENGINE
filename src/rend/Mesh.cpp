@@ -65,13 +65,13 @@ void Mesh::setTexture(const std::string& name, const std::sr1::shared_ptr<Textur
   textures.push_back(td);
 }
 
-void Mesh::parse(const std::string& data)
+void Mesh::parse(const std::string& data,bool sky)
 {
   std::string currentLine;
 
   try
   {
-    safeParse(data, currentLine);
+    safeParse(data, currentLine,sky);
   }
   catch(std::exception& e)
   {
@@ -79,7 +79,7 @@ void Mesh::parse(const std::string& data)
   }
 }
 
-void Mesh::safeParse(const std::string& data, std::string& currentLine)
+void Mesh::safeParse(const std::string& data, std::string& currentLine, bool sky)
 {
   std::sr1::vector<std::string> lines;
   Util::splitStringLineEnding(data, lines);
@@ -183,8 +183,15 @@ void Mesh::safeParse(const std::string& data, std::string& currentLine)
       b->add(fit->pb);
       b->add(fit->pc);
     }
+	if (sky)
+	{
+		setBuffer("sky_Position", b);
+	}
+	else
+	{
+	 setBuffer("a_Position", b);
+	}
 
-    setBuffer("a_Position", b);
   }
 
   if(tcs.size() > 0)
@@ -199,7 +206,14 @@ void Mesh::safeParse(const std::string& data, std::string& currentLine)
       b->add(fit->tcc);
     }
 
-    setBuffer("a_TexCoord", b);
+	if (sky)
+	{
+		setBuffer("sky_TexCoord", b);
+	}
+	else
+	{
+		setBuffer("a_TexCoord", b);
+	}
   }
 
   if(normals.size() > 0)

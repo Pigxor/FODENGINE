@@ -46,11 +46,11 @@ Renderer::~Renderer()
 {
 }
 
-void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ortho, std::shared_ptr<Camera> cam)
+void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool skybox, std::shared_ptr<Camera> cam)
 {
-	stbi_set_flip_vertically_on_load(true);
+	//stbi_set_flip_vertically_on_load(true);
 	camera = cam;
-	ortho = _ortho;
+	//ortho = skybox;
 	std::sr1::shared_ptr<Engine> eng = getCore();
 	shader = eng->context->createShader();
 	{
@@ -90,7 +90,7 @@ void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool _ort
 			obj += line + "\n";
 		}
 
-		mesh->parse(obj);
+		mesh->parse(obj,skybox);
 	}
 	tex = eng->context->createTexture();
 	{
@@ -144,10 +144,10 @@ void Renderer::onDisplay()
 	shader->setUniform("u_View", camera->getView());
 	/*glClearColor(0.10f, 0.15f, 0.25f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
-	if (!ortho)
-	{
+	//if (!ortho)
+	//{
 		shader->setUniform("u_Projection", camera->getProjection());
-	}
+	//}
 	shader->setUniform("u_Model", transform->getModel());
 	shader->setMesh(mesh);
 	shader->render();
