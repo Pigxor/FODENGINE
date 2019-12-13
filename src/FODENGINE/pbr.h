@@ -56,7 +56,7 @@ public:
 	void renderInit(char* _shader, char* _model, char* _texture, std::shared_ptr<Renderer> _skybox, std::shared_ptr<Camera> cam, std::shared_ptr<Camera> camRT, char* _metallic, char* _roughness, char* _ao, char* _albedo, char* _normal, char* _imap);
 	virtual  void onDisplay();
 	std::sr1::shared_ptr<rend::Texture> makeTexture(const char* _filePath);
-	void cubemapInit(char* _hdrFile, char* _cubeShader, char* _skybox);
+	//void cubemapInit(char* _hdrFile, char* _cubeShader, char* _skybox);
 
 };
 

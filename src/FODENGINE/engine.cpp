@@ -53,33 +53,30 @@ std::shared_ptr<Engine> Engine::initialize()
 	}
 	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	engine->context = rend::Context::initialize();
-	//cubemap cameras
-	for (int i = 0; i < 4; i++)
-	{
-		std::shared_ptr<Entity> camEnt = engine->addEntity();
-		std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
-		std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
-		cam->cameraInit(60);
-		camTransform->setPos(glm::vec3(0, 0, 0));
-		camTransform->setRot(0, 90 * i, 0);
-
-		cam->makeRenderTexture();
-		
-		engine->cubeCams.push_back(camEnt);
-	}
-	for (int i = 0; i < 2; i++)
-	{
-		std::shared_ptr<Entity> camEnt = engine->addEntity();
-		std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
-		std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
-		cam->cameraInit(60);
-		camTransform->setPos(glm::vec3(0, 0, 0));
-		camTransform->setRot(90 * i, 0, 0);
-
-		cam->makeRenderTexture();
-
-		engine->cubeCams.push_back(camEnt);
-	}
+	////cubemap cameras
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	std::shared_ptr<Entity> camEnt = engine->addEntity();
+	//	std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
+	//	std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
+	//	cam->cameraInit(60);
+	//	camTransform->setPos(glm::vec3(0, 0, 0));
+	//	camTransform->setRot(0, 90 * i, 0);
+	//	cam->makeRenderTexture();
+	//	
+	//	engine->cubeCams.push_back(camEnt);
+	//}
+	//for (int i = 0; i < 2; i++)
+	//{
+	//	std::shared_ptr<Entity> camEnt = engine->addEntity();
+	//	std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
+	//	std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
+	//	cam->cameraInit(60);
+	//	camTransform->setPos(glm::vec3(0, 0, 0));
+	//	camTransform->setRot(90 * i, 0, 0);
+	//	cam->makeRenderTexture();
+	//	engine->cubeCams.push_back(camEnt);
+	//}
 	return engine;
 }
 
@@ -92,9 +89,9 @@ std::shared_ptr<Entity> Engine::addEntity()
 	return entity;
 }
 
-std::shared_ptr<Entity> Engine::getCamera(int i)
+std::shared_ptr<Camera> Engine::getCamera(int i)
 {
-	return Cams[i];
+	return Cams[i]->getComponent<Camera>();
 }
 
 void Engine::addCamera(int angle)

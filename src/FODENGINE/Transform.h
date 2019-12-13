@@ -27,7 +27,7 @@ public:
 	float getRot();
 	void setScale(glm::vec3 _scale);
 	glm::vec3 getScale();
-	glm::mat4 getModel(std::shared_ptr<Camera> cam);
+	glm::mat4 getModel(glm::vec3 cam);
 	glm::mat4 getModel();
 };
 

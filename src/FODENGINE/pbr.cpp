@@ -79,7 +79,7 @@ void PBR::renderInit(char* _shader, char* _model, char* _texture, std::shared_pt
 	IMap = makeTexture(_imap);
 
 	mesh->setTexture("IMap", IMap);
-	mesh->setTexture("u_Texture", tex);
+	//mesh->setTexture("u_Texture", tex);
 	mesh->setTexture("normalM", norm);
 	mesh->setTexture("metallicM", met);
 	mesh->setTexture("roughnessM", ruf);
@@ -99,20 +99,9 @@ void PBR::onDisplay()
 	//shader->setUniform("sky_Model", skybox->getEntity()->getComponent<Transform>()->getModel());
 	shader->setUniform("u_Projection", camera->getProjection());
 	shader->setUniform("u_View", camera->getView());
-	shader->setUniform("camPos", camera->getPos());
-	//shader->setUniform("albedo", albedo);
-	//shader->setUniform("metallic", metallic);
-	//shader->setUniform("roughness", roughness);
-	//shader->setUniform("ao", ao);
-	//for (unsigned int i = 0; i < sizeof(lightPos) / sizeof(lightPos[0]); ++i)
-	//{
-	//	glm::vec3 newPos = lightPos[i] + glm::vec3(sin(eng->deltaT*0.3f) * 5.0, 0.0, 0.0);
-	//	lightPos[i] = newPos;	
-	//	shader->setUniform("lightColour[" + std::to_string(i) + "]", lightColour[i]);
-	//	shader->setUniform("lightPos[" + std::to_string(i) + "]",lightPos[i]);
-	//
-	//}
-	shader->setUniform("u_Model", transform->getModel(camera));
+	shader->setUniform("camPos",  camera->getPos());
+
+	shader->setUniform("u_Model", transform->getModel(camera->getPos()));
 	//shader->setMesh(skybox->getMesh());
 	shader->setMesh(mesh);
 

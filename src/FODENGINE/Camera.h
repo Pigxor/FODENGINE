@@ -6,7 +6,7 @@
 
 class Camera : public Component
 {
-	glm::mat4 pos;
+	glm::mat4 posMat;
 	glm::mat4 viewMat;
 	glm::mat4 projectMat;
 	float angle;

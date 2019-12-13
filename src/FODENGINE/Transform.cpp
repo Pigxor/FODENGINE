@@ -56,14 +56,14 @@ glm::vec3 Transform::getScale()
 	return scale;
 }
 
-glm::mat4 Transform::getModel(std::shared_ptr<Camera> cam)
+glm::mat4 Transform::getModel(glm::vec3 cam)
 {
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, (cam->getPos()));
+	model = glm::translate(model, (cam));
 	model = glm::rotate(model, glm::radians(rotationY), glm::vec3(0, 1, 0));
 	model = glm::rotate(model, glm::radians(rotationX), glm::vec3(1, 0, 0));
 	model = glm::rotate(model, glm::radians(rotationZ), glm::vec3(0, 0, 1));
-   model = glm::translate(model, -(cam->getPos()));
+    model = glm::translate(model, -(cam));
 
 	model = glm::translate(model, position);
 	model = glm::scale(model, scale);
