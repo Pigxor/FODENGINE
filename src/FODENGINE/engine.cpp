@@ -122,6 +122,8 @@ void Engine::start()
 		T = SDL_GetTicks();
 		diff = T - lastT;
 		deltaT = diff / 2000;
+
+
 		SDL_Event event = { 0 };
 		while (SDL_PollEvent(&event))
 		{
@@ -129,10 +131,30 @@ void Engine::start()
 			{
 				quit = true;
 			}
+			else if (event.type == SDL_KEYDOWN)
+			{
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_RIGHT:
+					std::cout << "Right" << std::endl;
+					break;
+				case SDLK_LEFT:
+					std::cout << "Left" << std::endl;
+					break;
+				case SDLK_UP:
+					std::cout << "Up" << std::endl;
+					break;
+				case SDLK_DOWN:
+					std::cout << "Down" << std::endl;
+					break;
+				}
+			}
+
 		}
+
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
-			(*it)->Update();		
+			(*it)->Update();
 		}
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{
@@ -141,6 +163,7 @@ void Engine::start()
 		SDL_GL_SwapWindow(window);
 		lastT = T;
 	}
+	
 }
 
 void Engine::stop()
