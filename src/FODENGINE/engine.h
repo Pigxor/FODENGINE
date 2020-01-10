@@ -4,16 +4,22 @@
 #include "entity.h"
 #include "component.h"
 #include "Renderer.h"
-#include "pbr.h"
 #include "SDL2/SDL.h"
 #include "rend/rend.h"
 #include "audioSource.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "fpController.h"
+#include "skyBox.h"
 
 #include <iostream>
 #include <memory>
 #include <vector>
+
+
+
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 760
 
 class Entity;
 
@@ -43,6 +49,8 @@ public:
 
 	std::shared_ptr<Entity> addEntity();
 	std::shared_ptr<Camera> getCamera(int i);
+	SDL_Window* getWindow();
+
 	void addCamera(int angle);
 
 	std::sr1::shared_ptr<rend::Context> getContext();

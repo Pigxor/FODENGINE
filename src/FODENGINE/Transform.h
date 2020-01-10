@@ -24,10 +24,11 @@ public:
 	glm::vec3 getPos();
 	void setRot(float rotX, float rotY, float rotZ);
 	void addRot(float rotX, float rotY, float rotZ);
-	float getRot();
+	float getRotY();
+	float getRotX();
+	float getRotZ();
 	void setScale(glm::vec3 _scale);
 	glm::vec3 getScale();
-	glm::mat4 getModel(glm::vec3 cam);
 	glm::mat4 getModel();
 };
 

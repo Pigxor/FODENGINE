@@ -41,9 +41,18 @@ void Transform::addRot(float rotX, float rotY, float rotZ)
 	rotationZ += rotZ;
 }
 
-float Transform::getRot()
+float Transform::getRotY()
 {
 	return rotationY;
+}
+float Transform::getRotX()
+{
+	return rotationX;
+}
+
+float Transform::getRotZ()
+{
+	return rotationZ;
 }
 
 void Transform::setScale(glm::vec3 _scale)
@@ -56,33 +65,19 @@ glm::vec3 Transform::getScale()
 	return scale;
 }
 
-glm::mat4 Transform::getModel(glm::vec3 cam)
-{
-	model = glm::mat4(1.0f);
-	
-	model = glm::translate(model, cam);
-	model = glm::rotate(model, glm::radians(rotationY), glm::vec3(0, 1, 0));
-	model = glm::rotate(model, glm::radians(rotationX), glm::vec3(1, 0, 0));
-	model = glm::translate(model, -cam);
-	model = glm::translate(model, position);
-	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0, 1, 0));
-	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0, 0, 1));
-	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1, 0, 0));
-	//model = glm::translate(model, position);
-	model = glm::scale(model, scale);
-
-	return model;
-}
-
 glm::mat4 Transform::getModel()
 {
 	model = glm::mat4(1.0f);
-//	model = glm::translate(model, position);
+	
+	model = glm::translate(model, position);
 	model = glm::rotate(model, glm::radians(rotationY), glm::vec3(0, 1, 0));
 	model = glm::rotate(model, glm::radians(rotationX), glm::vec3(1, 0, 0));
-	model = glm::rotate(model, glm::radians(rotationZ), glm::vec3(0, 0, 1));
-//	model = glm::translate(model, -(cam->getPos()));
+	model = glm::translate(model, -position);
 	model = glm::translate(model, position);
+	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0, 0, 1));
+	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1, 0, 0));
+	//model = glm::translate(model, position);
 	model = glm::scale(model, scale);
 
 	return model;

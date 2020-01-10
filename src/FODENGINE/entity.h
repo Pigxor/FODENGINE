@@ -9,6 +9,7 @@
 
 class Engine;
 class Component;
+class Transform;
 
 class Entity
 {	
@@ -16,6 +17,7 @@ class Entity
 
 	std::weak_ptr<Engine> engine;
 	std::weak_ptr<Entity> self;
+	std::shared_ptr<Transform> transf;
 	std::vector<std::shared_ptr<Component>> components;
 	virtual void Update();
 	virtual void Display();

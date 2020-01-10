@@ -1,9 +1,6 @@
 #include "engine.h"
 
 
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 760
-
 Engine::~Engine()
 {
 	alcMakeContextCurrent(NULL);
@@ -53,36 +50,14 @@ std::shared_ptr<Engine> Engine::initialize()
 	}
 	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	engine->context = rend::Context::initialize();
-	////cubemap cameras
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	std::shared_ptr<Entity> camEnt = engine->addEntity();
-	//	std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
-	//	std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
-	//	cam->cameraInit(60);
-	//	camTransform->setPos(glm::vec3(0, 0, 0));
-	//	camTransform->setRot(0, 90 * i, 0);
-	//	cam->makeRenderTexture();
-	//	
-	//	engine->cubeCams.push_back(camEnt);
-	//}
-	//for (int i = 0; i < 2; i++)
-	//{
-	//	std::shared_ptr<Entity> camEnt = engine->addEntity();
-	//	std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
-	//	std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
-	//	cam->cameraInit(60);
-	//	camTransform->setPos(glm::vec3(0, 0, 0));
-	//	camTransform->setRot(90 * i, 0, 0);
-	//	cam->makeRenderTexture();
-	//	engine->cubeCams.push_back(camEnt);
-	//}
+
 	return engine;
 }
 
 std::shared_ptr<Entity> Engine::addEntity()
 {
 	std::shared_ptr<Entity> entity = std::make_shared<Entity>();
+	std::shared_ptr<Transform> entTransf = entity->addComponent<Transform>();
 	entities.push_back(entity);
 	entity->engine = self;
 	entity->self = entity;
@@ -92,6 +67,11 @@ std::shared_ptr<Entity> Engine::addEntity()
 std::shared_ptr<Camera> Engine::getCamera(int i)
 {
 	return Cams[i]->getComponent<Camera>();
+}
+
+SDL_Window * Engine::getWindow()
+{
+	return window;
 }
 
 void Engine::addCamera(int angle)
@@ -123,34 +103,16 @@ void Engine::start()
 		diff = T - lastT;
 		deltaT = diff / 2000;
 
-
+		const Uint8 *state = SDL_GetKeyboardState(NULL);
 		SDL_Event event = { 0 };
 		while (SDL_PollEvent(&event))
 		{
-			if (event.type == SDL_QUIT)
+			if (state[SDL_SCANCODE_ESCAPE] || (event.type == SDL_QUIT))
 			{
 				quit = true;
 			}
-			else if (event.type == SDL_KEYDOWN)
-			{
-				switch (event.key.keysym.sym)
-				{
-				case SDLK_RIGHT:
-					std::cout << "Right" << std::endl;
-					break;
-				case SDLK_LEFT:
-					std::cout << "Left" << std::endl;
-					break;
-				case SDLK_UP:
-					std::cout << "Up" << std::endl;
-					break;
-				case SDLK_DOWN:
-					std::cout << "Down" << std::endl;
-					break;
-				}
-			}
-
 		}
+		
 
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{

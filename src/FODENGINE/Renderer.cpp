@@ -1,11 +1,7 @@
-
+#define STB_IMAGE_IMPLEMENTATION
 
 #include "Renderer.h"
 #include "stb_image.h"
-
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 760
-
 
 //
 //const GLfloat positions[] = {
