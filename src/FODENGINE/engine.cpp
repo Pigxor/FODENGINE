@@ -101,8 +101,12 @@ void Engine::start()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		T = SDL_GetTicks();
 		diff = T - lastT;
-		deltaT = diff / 2000;
-
+		deltaT = diff / 1000;
+		float idealTime = 1.0f / 60.0f;
+		if (idealTime > deltaT)
+		{
+			SDL_Delay((idealTime - deltaT)*1000.0f);
+		}
 		const Uint8 *state = SDL_GetKeyboardState(NULL);
 		SDL_Event event = { 0 };
 		while (SDL_PollEvent(&event))
