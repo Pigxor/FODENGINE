@@ -41,8 +41,10 @@ add_library(fodengine
  src/FODENGINE/fpController.h
  src/FODENGINE/skyBox.cpp
  src/FODENGINE/skyBox.h
-src/FODENGINE/boxCollider.cpp
+ src/FODENGINE/boxCollider.cpp
  src/FODENGINE/boxCollider.h
+ src/FODENGINE/modelCollider.cpp
+ src/FODENGINE/modelCollider.h
 )
 target_link_libraries(fodengine SDL2 rend OpenAL32)
 

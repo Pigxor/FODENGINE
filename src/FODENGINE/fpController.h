@@ -1,5 +1,5 @@
-#ifndef _FPCONTROLLER_H
-#define _FPCONTROLLER_H
+#ifndef _FPCONTROLLER_H_
+#define _FPCONTROLLER_H_
 
 #include "engine.h"
 

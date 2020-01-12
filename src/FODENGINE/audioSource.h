@@ -1,5 +1,5 @@
-#ifndef _AUDIO_SOURCE_H
-#define _AUDIO_SOURCE_H
+#ifndef _AUDIO_SOURCE_H_
+#define _AUDIO_SOURCE_H_
 
 #include "component.h"
 

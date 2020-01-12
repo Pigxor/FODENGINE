@@ -54,13 +54,14 @@ std::shared_ptr<Engine> Engine::initialize()
 	return engine;
 }
 
-std::shared_ptr<Entity> Engine::addEntity()
+std::shared_ptr<Entity> Engine::addEntity(char* nme)
 {
 	std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 	std::shared_ptr<Transform> entTransf = entity->addComponent<Transform>();
 	entities.push_back(entity);
 	entity->engine = self;
 	entity->self = entity;
+	entity->name = nme;
 	return entity;
 }
 
@@ -76,7 +77,7 @@ SDL_Window * Engine::getWindow()
 
 void Engine::addCamera(int angle)
 {
-	std::shared_ptr<Entity> camEnt = addEntity();
+	std::shared_ptr<Entity> camEnt = addEntity("Camera");
 	std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
 	std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
 	cam->cameraInit(angle);

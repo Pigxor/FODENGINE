@@ -24,7 +24,7 @@ protected:
 	virtual void onDisplay();
 	//onInit();
 public:
-
+	char* name;
 	std::shared_ptr<Engine> getCore();
 	std::shared_ptr<Entity> getEntity();
 

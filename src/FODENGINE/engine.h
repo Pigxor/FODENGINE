@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "fpController.h"
 #include "skyBox.h"
+#include "boxCollider.h"
 
 #include <iostream>
 #include <memory>
@@ -34,7 +35,7 @@ class Engine
 	
 	float diff;
 	std::vector<std::shared_ptr<Entity>> entities;
-	std::vector<std::shared_ptr<Entity>> cubeCams;
+
 	std::vector<std::shared_ptr<Entity>> Cams;
 
 	SDL_Window* window;
@@ -47,7 +48,7 @@ public:
 	~Engine();
 	static std::shared_ptr<Engine> initialize();
 
-	std::shared_ptr<Entity> addEntity();
+	std::shared_ptr<Entity> addEntity(char* nme);
 	std::shared_ptr<Camera> getCamera(int i);
 	SDL_Window* getWindow();
 
@@ -57,6 +58,23 @@ public:
 	void start();
 	void stop();
 	
+	template<class T>
+	std::vector<std::shared_ptr<Entity>> getEntities()
+	{
+		std::vector<std::shared_ptr<Entity>> rtnVec;
+		bool rtn;
+		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
+		{
+			rtn = (*it)->checkComponent<T>();
+			if (rtn)
+			{
+				rtnVec.push_back(*it);
+			}
+
+		}
+		return rtnVec;
+	}
+
 };
 
 #endif // !_ENGINE_H

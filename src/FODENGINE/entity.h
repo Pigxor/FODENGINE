@@ -14,7 +14,7 @@ class Transform;
 class Entity
 {	
 	friend Engine;
-
+	
 	std::weak_ptr<Engine> engine;
 	std::weak_ptr<Entity> self;
 	std::shared_ptr<Transform> transf;
@@ -24,7 +24,7 @@ class Entity
 	
 
 public:
-	
+	char* name;
 	template<class T>
 	std::shared_ptr<T> getComponent()
 	{
@@ -37,13 +37,26 @@ public:
 			{
 				return rtn;
 			}
-			else
-			{
-				throw rend::Exception("Failed To Find Component Of Specified Type");
-			}
+
 		}
 	}
 
+	template<class T>
+	bool checkComponent()
+	{
+		std::shared_ptr<T> rtn;
+		for (std::vector<std::shared_ptr<Component>>::iterator it = components.begin(); it != components.end(); it++)
+		{
+			rtn = std::dynamic_pointer_cast<T>(*it);
+
+			if (rtn)
+			{
+				return true;
+			}
+
+		}
+		return false;
+	}
 	std::shared_ptr<Engine> getEngine(std::shared_ptr<Engine> _engine);
 
 	template <class T>
@@ -52,6 +65,7 @@ public:
 		components.push_back(rtn);
 		rtn->entity = self;
 		rtn->engine = engine;
+		rtn->name = name;
 		return rtn;
 	}
 	template <class T, class U>
@@ -60,6 +74,7 @@ public:
 		components.push_back(rtn);
 		rtn->entity = self;
 		rtn->engine = engine;
+		rtn->name = name;
 		return rtn;
 	}
 	template <class T, class U, class V>
@@ -68,7 +83,7 @@ public:
 		components.push_back(rtn);
 		rtn->entity = self;
 		rtn->engine = engine;
-		engine->context->createShader();
+		rtn->name = name;
 		return rtn;
 	}
 	template <class T, class U, class V, class W>
@@ -77,6 +92,7 @@ public:
 		components.push_back(rtn);
 		rtn->entity = self;
 		rtn->engine = engine;
+		rtn->name = name;
 		return rtn;
 	}
 };
