@@ -45,6 +45,8 @@ add_library(fodengine
  src/FODENGINE/boxCollider.h
  src/FODENGINE/modelCollider.cpp
  src/FODENGINE/modelCollider.h
+ src/FODENGINE/guiRenderer.cpp
+ src/FODENGINE/guiRenderer.h
 )
 target_link_libraries(fodengine SDL2 rend OpenAL32)
 
