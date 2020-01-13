@@ -24,7 +24,7 @@ class Entity
 	
 
 public:
-	char* name;
+	const char* name;
 	template<class T>
 	std::shared_ptr<T> getComponent()
 	{

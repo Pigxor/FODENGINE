@@ -12,7 +12,7 @@ class FPContoller : public Component
 	glm::vec3 pos;
 
 	float movespeed = 0.5f;
-	float rotspeed = 1.0f;
+	float rotspeed = 1.5f;
 	float angleX;
 	float angleY;
 

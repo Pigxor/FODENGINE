@@ -10,6 +10,10 @@ void Camera::cameraInit(float _angle)
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 	camPos = transform->getPos();
+	if (ent->checkComponent<BoxCollider>())
+	{
+		ent->getComponent<BoxCollider>()->setActive(active);
+	}
 }
 
 
@@ -24,7 +28,19 @@ void Camera::onUpdate()
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 	camPos = transform->getPos();
-
+	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	if (state[SDL_SCANCODE_EQUALS])
+	{
+		changeCamera(1);
+	}
+	if (state[SDL_SCANCODE_MINUS])
+	{
+		changeCamera(-1);
+	}
+	if (ent->checkComponent<BoxCollider>())
+	{
+		ent->getComponent<BoxCollider>()->setActive(active);
+	}
 }
 
 glm::mat4 Camera::getView()
@@ -41,16 +57,53 @@ glm::mat4 Camera::getProjection()
 	return projectMat;
 }
 
-std::sr1::shared_ptr<rend::RenderTexture> Camera::getRenderTarget()
+bool Camera::getActive()
 {
-	return cubemap;
+	return active;
 }
 
-void Camera::makeRenderTexture()
+void Camera::setActive(bool Active)
 {
-	
-	std::sr1::shared_ptr<Engine> eng = getCore();
-	std::sr1::shared_ptr<rend::RenderTexture> tex = eng->context->createRenderTexture();
-	tex->setSize(512, 512);
-	cubemap = tex;
+	active = Active;
 }
+
+void Camera::changeCamera(int num)
+{
+	std::shared_ptr<Engine> eng = getEngine();
+	if (ID + num > eng->getCamsSize())
+	{
+		setActive(false);
+		eng->getCamera(0)->setActive(true);
+	}
+	if (ID + num < 0)
+	{
+		setActive(false);
+		eng->getCamera(eng->getCamsSize()-1)->setActive(true);
+	}
+	else if (ID + num < eng->getCamsSize() && ID+num > -1)
+	{
+		setActive(false);
+		eng->getCamera(ID + num)->setActive(true);
+	}
+
+}
+
+void Camera::pickCamera(int num)
+{
+	std::shared_ptr<Engine> eng = getEngine();
+	if (ID + num < eng->getCamsSize() && ID + num > -1)
+	{
+		setActive(false);
+		eng->getCamera(ID + num)->setActive(true);
+	}
+	else
+	{
+		std::cout << "Trying to activate a non-existent camera" << std::endl;
+	}
+}
+
+void Camera::setID(int id)
+{
+	ID = id;
+}
+

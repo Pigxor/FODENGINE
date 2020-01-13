@@ -3,9 +3,10 @@
 
 #include "engine.h"
 
-
 class Camera : public Component
 {
+	int ID;
+
 	glm::mat4 posMat;
 	glm::mat4 viewMat;
 	glm::mat4 projectMat;
@@ -15,13 +16,13 @@ class Camera : public Component
 	std::sr1::shared_ptr<rend::RenderTexture> cubemap;
 public :
 	void cameraInit(float _angle);
-
 	glm::vec3 getPos();
 	virtual void onUpdate();
 	glm::mat4 getView();
 	glm::mat4 getProjection();
-	std::sr1::shared_ptr<rend::RenderTexture> getRenderTarget();
-	void makeRenderTexture();
+	void changeCamera(int num);
+	void pickCamera(int num);
+	void setID(int id);
 };
 
 

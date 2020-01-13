@@ -1,9 +1,25 @@
 #include "boxCollider.h"
 
+
+
+void BoxCollider::boxCollInit(bool Active)
+{
+	std::sr1::shared_ptr<Entity> ent = getEntity();
+	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
+	size = glm::vec3(1, 1, 1);
+	offset = glm::vec3(0, 0, 0);
+	lastPos = transform->getPos();
+	active = Active;
+	moveable = true;
+}
+
 void BoxCollider::onUpdate()
 {
-//	staticMeshCollide();
-	boxCollide();
+	if (active)
+	{
+		//	staticMeshCollide();
+		boxCollide();
+	}
 }
 
 void BoxCollider::staticMeshCollide()
@@ -16,16 +32,19 @@ void BoxCollider::boxCollide()
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 	glm::vec3 newPos = transform->getPos() + offset;
 	std::vector<std::sr1::shared_ptr<Entity>> objs;
-	objs = getCore()->getEntities<BoxCollider>();
+	objs = getEngine()->getEntities<BoxCollider>();
 	for (std::vector<std::shared_ptr<Entity>>::iterator it = objs.begin(); it != objs.end(); it++)
 	{
-		if ((*it)->name != name)
+		if ((*it)->name != name && (*it)->getComponent<BoxCollider>()->getActive() == true)
 		{
-			glm::vec3 collResp = (*it)->getComponent<BoxCollider>()->getCollResponse(newPos, size);
-			newPos = collResp;
-			newPos = newPos - offset;
-			transform->setPos(newPos);
-			lastPos = newPos;
+			if(moveable)
+			{
+				glm::vec3 collResp = (*it)->getComponent<BoxCollider>()->getCollResponse(newPos, size);
+				newPos = collResp;
+				newPos = newPos - offset;
+				transform->setPos(newPos);
+				lastPos = newPos;
+			}
 		}
 	}
 }
@@ -123,15 +142,6 @@ glm::vec3 BoxCollider::getCollResponse(glm::vec3 pos, glm::vec3 size)
 }
 
 
-
-void BoxCollider::boxCollInit()
-{
-	std::sr1::shared_ptr<Entity> ent = getEntity();
-	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
-	size = glm::vec3(1, 1, 1);
-	lastPos = transform->getPos();
-}
-
 void BoxCollider::setOffset(glm::vec3 Offset)
 {
 	offset = Offset;
@@ -141,3 +151,20 @@ void BoxCollider::setSize(glm::vec3 Size)
 {
 	size = Size;
 }
+
+bool BoxCollider::checkColliding(glm::vec3 pos, glm::vec3 Size)
+{
+	bool col = isColliding(pos, Size);
+	return col;
+}
+
+void BoxCollider::setMoveable(bool Active)
+{
+	moveable = Active;
+}
+
+bool BoxCollider::getMoveable()
+{
+	return moveable;
+}
+

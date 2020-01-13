@@ -12,7 +12,9 @@
 #include "fpController.h"
 #include "skyBox.h"
 #include "boxCollider.h"
+#include "guiRenderer.h"
 
+#include <stb_image.h>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -35,9 +37,8 @@ class Engine
 	
 	float diff;
 	std::vector<std::shared_ptr<Entity>> entities;
-
-	std::vector<std::shared_ptr<Entity>> Cams;
-
+	std::vector<std::shared_ptr<Camera>> Cams;
+	std::shared_ptr<Camera> activeCam;
 	SDL_Window* window;
 	ALCdevice* device;
 	ALCcontext* acontext;
@@ -48,11 +49,12 @@ public:
 	~Engine();
 	static std::shared_ptr<Engine> initialize();
 
-	std::shared_ptr<Entity> addEntity(char* nme);
+	std::shared_ptr<Entity> addEntity(const char* nme);
 	std::shared_ptr<Camera> getCamera(int i);
 	SDL_Window* getWindow();
-
-	void addCamera(int angle);
+	std::shared_ptr<Camera> getActiveCam();
+	std::shared_ptr<Camera> addCamera(int angle);
+	int getCamsSize();
 
 	std::sr1::shared_ptr<rend::Context> getContext();
 	void start();

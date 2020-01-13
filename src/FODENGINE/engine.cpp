@@ -54,7 +54,7 @@ std::shared_ptr<Engine> Engine::initialize()
 	return engine;
 }
 
-std::shared_ptr<Entity> Engine::addEntity(char* nme)
+std::shared_ptr<Entity> Engine::addEntity(const char* nme)
 {
 	std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 	std::shared_ptr<Transform> entTransf = entity->addComponent<Transform>();
@@ -67,7 +67,7 @@ std::shared_ptr<Entity> Engine::addEntity(char* nme)
 
 std::shared_ptr<Camera> Engine::getCamera(int i)
 {
-	return Cams[i]->getComponent<Camera>();
+	return Cams[i];
 }
 
 SDL_Window * Engine::getWindow()
@@ -75,15 +75,35 @@ SDL_Window * Engine::getWindow()
 	return window;
 }
 
-void Engine::addCamera(int angle)
+std::shared_ptr<Camera> Engine::getActiveCam()
 {
-	std::shared_ptr<Entity> camEnt = addEntity("Camera");
+	for (std::vector<std::shared_ptr<Camera>>::iterator it = Cams.begin(); it != Cams.end(); it++)
+	{
+		if ((*it)->getActive())
+		{
+			return (*it);
+		}
+	}
+}
+
+std::shared_ptr<Camera> Engine::addCamera(int angle)
+{
+	const char* name = "Camera" + Cams.size();
+	std::shared_ptr<Entity> camEnt = addEntity(name);
 	std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
 	std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();
 	cam->cameraInit(angle);
 	camEnt->engine = self;
 	camEnt->self = camEnt;
-	Cams.push_back(camEnt);
+	cam->setID(Cams.size());
+	cam->setActive(false);
+	Cams.push_back(cam);
+	return cam;
+}
+
+int Engine::getCamsSize()
+{
+	return Cams.size();
 }
 
 std::sr1::shared_ptr<rend::Context> Engine::getContext()
@@ -116,8 +136,7 @@ void Engine::start()
 			{
 				quit = true;
 			}
-		}
-		
+		}	
 
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
 		{

@@ -1,5 +1,5 @@
-#ifndef _RENDERER_H_
-#define _RENDERER_H_
+#ifndef _GUIRENDERER_H_
+#define _GUIRENDERER_H_
 #include "engine.h"
 
 
@@ -14,24 +14,28 @@ class Camera;
 
 
 
-class Renderer : public Component
+class GUIRenderer : public Component
 {
 
 	SDL_Window *window;
 	GLuint programId;
 	GLuint vaoId;
+	glm::vec4 pos;
 	std::sr1::shared_ptr<rend::Shader> shader;
-	std::sr1::shared_ptr<rend::Mesh> mesh;
 	std::sr1::shared_ptr<rend::Texture> tex;
+	std::sr1::shared_ptr<rend::Mesh> mesh;
+	std::sr1::shared_ptr<rend::Buffer> posBuffer;
+	std::sr1::shared_ptr<rend::Buffer> texBuffer;
 	std::sr1::shared_ptr<Camera> camera;
+
 	float angle = 0;
 	bool ortho = false;
 
 public:
 
-	~Renderer();
-	void renderInit(char* _shader, char* _model,char* _texture,bool skybox);
-	std::sr1::shared_ptr<rend::Mesh> getMesh();
+	~GUIRenderer();
+	void renderInit(char* _shader, char* _texture);
+	void setPosSize(glm::vec4 size);
 	void onDisplay();
 };
 

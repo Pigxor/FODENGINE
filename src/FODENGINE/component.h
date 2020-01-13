@@ -23,9 +23,12 @@ protected:
 	virtual void onUpdate();
 	virtual void onDisplay();
 	//onInit();
+	bool active;
 public:
-	char* name;
-	std::shared_ptr<Engine> getCore();
+	void setActive(bool Active);
+	bool getActive();
+	const char* name;
+	std::shared_ptr<Engine> getEngine();
 	std::shared_ptr<Entity> getEntity();
 
 

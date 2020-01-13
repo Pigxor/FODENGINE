@@ -6,8 +6,10 @@
 class BoxCollider : public Component
 {
 	glm::vec3 size;
-	glm::vec3 offset;// = glm::vec3(1, 1, 1);
+	glm::vec3 offset;
 	glm::vec3 lastPos;
+
+	bool moveable;
 
 	void onUpdate();
 	void staticMeshCollide();
@@ -16,11 +18,13 @@ class BoxCollider : public Component
 	glm::vec3 getCollResponse(glm::vec3 pos, glm::vec3 size);
 
 public:
-	void boxCollInit();
+	void boxCollInit(bool Active);
 	void setOffset(glm::vec3 Offset);
 	void setSize(glm::vec3 Size);
+	bool checkColliding(glm::vec3 pos, glm::vec3 Size);
 
-	
+	void setMoveable(bool Active);
+	bool getMoveable();
 };
 
 #endif
