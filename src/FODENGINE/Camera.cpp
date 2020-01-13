@@ -14,6 +14,7 @@ void Camera::cameraInit(float _angle)
 	{
 		ent->getComponent<BoxCollider>()->setActive(active);
 	}
+	frametimer = 0;
 }
 
 
@@ -41,6 +42,10 @@ void Camera::onUpdate()
 	{
 		ent->getComponent<BoxCollider>()->setActive(active);
 	}
+	if (frametimer > 0)
+	{
+		frametimer--;
+	}
 }
 
 glm::mat4 Camera::getView()
@@ -57,35 +62,31 @@ glm::mat4 Camera::getProjection()
 	return projectMat;
 }
 
-bool Camera::getActive()
-{
-	return active;
-}
-
-void Camera::setActive(bool Active)
-{
-	active = Active;
-}
-
 void Camera::changeCamera(int num)
 {
-	std::shared_ptr<Engine> eng = getEngine();
-	if (ID + num > eng->getCamsSize())
+	if (active && frametimer == 0)
 	{
-		setActive(false);
-		eng->getCamera(0)->setActive(true);
+		int newID = ID + num;
+		std::shared_ptr<Engine> eng = getEngine();
+		if (newID >= eng->getCamsSize())
+		{
+			setActive(false);
+			eng->getCamera(0)->setActive(true);
+			eng->getCamera(0)->setFtimer(20);
+		}
+		if (newID < 0)
+		{
+			setActive(false);
+			eng->getCamera(eng->getCamsSize() - 1)->setActive(true);
+			eng->getCamera(eng->getCamsSize() - 1)->setFtimer(20);
+		}
+		else if (newID < eng->getCamsSize() && newID > -1)
+		{
+			setActive(false);
+			eng->getCamera(newID)->setActive(true);
+			eng->getCamera(newID)->setFtimer(20);
+		}
 	}
-	if (ID + num < 0)
-	{
-		setActive(false);
-		eng->getCamera(eng->getCamsSize()-1)->setActive(true);
-	}
-	else if (ID + num < eng->getCamsSize() && ID+num > -1)
-	{
-		setActive(false);
-		eng->getCamera(ID + num)->setActive(true);
-	}
-
 }
 
 void Camera::pickCamera(int num)
@@ -105,5 +106,10 @@ void Camera::pickCamera(int num)
 void Camera::setID(int id)
 {
 	ID = id;
+}
+
+void Camera::setFtimer(int timer)
+{
+	frametimer = timer;
 }
 

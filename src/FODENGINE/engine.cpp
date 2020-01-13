@@ -88,7 +88,7 @@ std::shared_ptr<Camera> Engine::getActiveCam()
 
 std::shared_ptr<Camera> Engine::addCamera(int angle)
 {
-	const char* name = "Camera" + Cams.size();
+	const char* name = "Camera";
 	std::shared_ptr<Entity> camEnt = addEntity(name);
 	std::shared_ptr<Transform> camTransform = camEnt->addComponent<Transform>();
 	std::shared_ptr<Camera> cam = camEnt->addComponent<Camera>();

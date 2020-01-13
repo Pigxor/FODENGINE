@@ -24,6 +24,14 @@ int main()
 	cambox2->boxCollInit(false);
 	cambox2->setSize(glm::vec3(1, 1, 1));
 
+	std::shared_ptr<Camera> cam3 = engine->addCamera(60);
+	std::shared_ptr<FPContoller> camcont3 = cam3->getEntity()->addComponent<FPContoller>();
+	std::shared_ptr<BoxCollider> cambox3 = cam3->getEntity()->addComponent<BoxCollider>();
+	cam3->getEntity()->getComponent<Transform>()->setPos(glm::vec3(0, 2, 5));
+	camcont3->setMovespeed(0.2f);
+	cambox3->boxCollInit(false);
+	cambox3->setSize(glm::vec3(1, 1, 1));
+
 	std::shared_ptr<Entity> skybox = engine->addEntity("Skybox");
 	std::shared_ptr<Transform> skyTransform = skybox->getComponent<Transform>();
 	std::shared_ptr<Renderer> skycomponent = skybox->addComponent<Renderer>();

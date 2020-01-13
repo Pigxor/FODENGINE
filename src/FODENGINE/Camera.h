@@ -6,7 +6,7 @@
 class Camera : public Component
 {
 	int ID;
-
+	int frametimer;
 	glm::mat4 posMat;
 	glm::mat4 viewMat;
 	glm::mat4 projectMat;
@@ -23,6 +23,7 @@ public :
 	void changeCamera(int num);
 	void pickCamera(int num);
 	void setID(int id);
+	void setFtimer(int timer);
 };
 
 
