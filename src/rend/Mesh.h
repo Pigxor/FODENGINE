@@ -37,6 +37,7 @@ private:
   std::sr1::vector<std::sr1::shared_ptr<BufferData> > buffers;
   std::sr1::vector<std::sr1::shared_ptr<TextureData> > textures;
 
+
   void safeParse(const std::string& data, std::string& currentLine, bool sky);
 
 };

@@ -33,35 +33,48 @@ int main()
 	cambox3->setSize(glm::vec3(1, 1, 1));
 
 	std::shared_ptr<Entity> skybox = engine->addEntity("Skybox");
-	std::shared_ptr<Transform> skyTransform = skybox->getComponent<Transform>();
 	std::shared_ptr<Renderer> skycomponent = skybox->addComponent<Renderer>();
 	std::shared_ptr<Skybox> sb = skybox->addComponent<Skybox>();
 	skycomponent->renderInit("../shaders/skyShader.txt", "../models/Skybox.obj", "../models/road.jpg", true);
-	skyTransform->setScale({5,5,5 });
-	skyTransform->setRot(0,0, 0);
+	skybox->getComponent<Transform>()->setScale(glm::vec3(2,2,2));
+	skybox->getComponent<Transform>()->setRot(0,0, 0);
 
 	std::shared_ptr<Entity> newent = engine->addEntity("Tibbers");
-	std::shared_ptr<Transform> newentT = newent->getComponent<Transform>();
 	std::shared_ptr<Renderer> newentR = newent->addComponent<Renderer>();
 	std::shared_ptr<BoxCollider> newentBC = newent->addComponent<BoxCollider>();
 	newentR->renderInit("../shaders/basicShader.txt", "../models/Tibbers.obj", "../models/Tibbers.png", false);
-	newentT->setPos({ 0,0,0 });
-	newentT->setScale({ 0.01,0.01,0.01 });
-	newentT->setRot(0, 0, 0);
+	newent->getComponent<Transform>()->setPos({ 0,0,0 });
+	newent->getComponent<Transform>()->setScale({ 0.01,0.01,0.01 });
+	newent->getComponent<Transform>()->setRot(0, 0, 0);
 	newentBC->boxCollInit(true);
 	newentBC->setSize(glm::vec3(0.1, 0.1, 0.1));
 	newentBC->setOffset(glm::vec3(0, 1, 0));
 	newentBC->setMoveable(false);
 
+	std::shared_ptr<Entity> floor = engine->addEntity("Floor");
+	std::shared_ptr<Renderer> floorR = floor->addComponent<Renderer>();
+	std::shared_ptr<BoxCollider> floorBC = floor->addComponent<BoxCollider>();
+	floorR->renderInit("../shaders/basicShader.txt", "../models/cube.obj", "../models/grey.png", false);
+	floor->getComponent<Transform>()->setPos({ 0,0,0 });
+	floor->getComponent<Transform>()->setScale({ 50,0.01,50 });
+	floor->getComponent<Transform>()->setRot(0, 0, 0);
+	floorBC->boxCollInit(true);
+	floorBC->setSize(glm::vec3(50, 0.1, 50));
+	floorBC->setOffset(glm::vec3(0, 0, 0));
+	floorBC->setMoveable(false);
+													
+	std::shared_ptr<Entity> whitebox1 = engine->addBox(glm::vec3(2, 1, -2),glm::vec3(1,1,1),glm::vec3(0,45,0));
+	std::shared_ptr<Entity> whitebox2 = engine->addBox(glm::vec3(-2, 1, -2),glm::vec3(1,1,1),glm::vec3(0,45,0));
+	
 	std::shared_ptr<Entity> gui = engine->addEntity("GUI");	
 	std::shared_ptr<GUIRenderer> guiR = newent->addComponent<GUIRenderer>();
-	glm::vec4 sizes = glm::vec4(0, 0, 100, 100);
-	guiR->renderInit("../shaders/guiShader.txt", "../models/reticle.png");
+	glm::vec4 sizes = glm::vec4((WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT / 2 - 25), 50, 50); //makes the gui central
+	guiR->renderInit("../shaders/guiShader.txt", "../models/circle.png");
 	guiR->setPosSize(sizes);
 
 	std::shared_ptr<Entity> entity = engine->addEntity("Audio1");
 	std::shared_ptr<audioSource> audio = entity->addComponent<audioSource>();
-	//audio->audioSourceInit("../sounds/Ignite.mmp3"); Ogg Only
+	//audio->audioSourceInit("../sounds/Ignite.mp3"); Ogg Only
 	//audio->playSound();
 
 	engine->start();

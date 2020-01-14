@@ -105,7 +105,7 @@ void FPContoller::onUpdate()
 	}
 	if (ent->getComponent<Camera>()->getActive())
 	{
-		//std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+		std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
 
 		transform->setPos(pos);
 		transform->setRot(angleY, angleX, transform->getRotZ());

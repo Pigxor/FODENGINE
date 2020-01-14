@@ -25,7 +25,7 @@ class Renderer : public Component
 	std::sr1::shared_ptr<rend::Texture> tex;
 	std::sr1::shared_ptr<Camera> camera;
 	float angle = 0;
-	bool ortho = false;
+	bool sky = false;
 
 public:
 

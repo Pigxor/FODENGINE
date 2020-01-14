@@ -101,6 +101,22 @@ std::shared_ptr<Camera> Engine::addCamera(int angle)
 	return cam;
 }
 
+std::shared_ptr<Entity> Engine::addBox(glm::vec3 pos, glm::vec3 scale, glm::vec3 rots)
+{
+	std::shared_ptr<Entity> box = addEntity("Box");
+	std::shared_ptr<Renderer> boxR = box->addComponent<Renderer>();
+	std::shared_ptr<BoxCollider> boxBC = box->addComponent<BoxCollider>();
+	boxR->renderInit("../shaders/basicShader.txt", "../models/cube.obj", "../models/grey.png", false);
+	box->getComponent<Transform>()->setPos(pos);
+	box->getComponent<Transform>()->setScale(scale);
+	box->getComponent<Transform>()->setRot(rots.x, rots.y, rots.z);
+	boxBC->boxCollInit(true);
+	boxBC->setSize(scale);
+	boxBC->setOffset(glm::vec3(0, 0, 0));
+	boxBC->setMoveable(false);
+	return box;
+}
+
 int Engine::getCamsSize()
 {
 	return Cams.size();

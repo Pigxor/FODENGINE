@@ -54,6 +54,7 @@ public:
 	SDL_Window* getWindow();
 	std::shared_ptr<Camera> getActiveCam();
 	std::shared_ptr<Camera> addCamera(int angle);
+	std::shared_ptr<Entity> Engine::addBox(glm::vec3 pos, glm::vec3 scale,glm::vec3 rots);
 	int getCamsSize();
 
 	std::sr1::shared_ptr<rend::Context> getContext();
