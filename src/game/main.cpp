@@ -39,17 +39,17 @@ int main()
 	skybox->getComponent<Transform>()->setScale(glm::vec3(2,2,2));
 	skybox->getComponent<Transform>()->setRot(0,0, 0);
 
-	std::shared_ptr<Entity> newent = engine->addEntity("Tibbers");
-	std::shared_ptr<Renderer> newentR = newent->addComponent<Renderer>();
-	std::shared_ptr<BoxCollider> newentBC = newent->addComponent<BoxCollider>();
-	newentR->renderInit("../shaders/basicShader.txt", "../models/Tibbers.obj", "../models/Tibbers.png", false);
-	newent->getComponent<Transform>()->setPos({ 0,0,0 });
-	newent->getComponent<Transform>()->setScale({ 0.01,0.01,0.01 });
-	newent->getComponent<Transform>()->setRot(0, 0, 0);
-	newentBC->boxCollInit(true);
-	newentBC->setSize(glm::vec3(0.1, 0.1, 0.1));
-	newentBC->setOffset(glm::vec3(0, 1, 0));
-	newentBC->setMoveable(false);
+	std::shared_ptr<Entity> tibbers = engine->addEntity("Tibbers");
+	std::shared_ptr<Renderer> tibbersR = tibbers->addComponent<Renderer>();
+	std::shared_ptr<BoxCollider> tibbersBC = tibbers->addComponent<BoxCollider>();
+	tibbersR->renderInit("../shaders/basicShader.txt", "../models/Tibbers.obj", "../models/Tibbers.png", false);
+	tibbers->getComponent<Transform>()->setPos({ 0,0,0 });
+	tibbers->getComponent<Transform>()->setScale({ 0.01,0.01,0.01 });
+	tibbers->getComponent<Transform>()->setRot(0, 0, 0);
+	tibbersBC->boxCollInit(true);
+	tibbersBC->setSize(glm::vec3(0.1, 0.2, 0.1));
+	tibbersBC->setOffset(glm::vec3(0, 1, 0));
+	tibbersBC->setMoveable(false);
 
 	std::shared_ptr<Entity> floor = engine->addEntity("Floor");
 	std::shared_ptr<Renderer> floorR = floor->addComponent<Renderer>();
@@ -67,7 +67,7 @@ int main()
 	std::shared_ptr<Entity> whitebox2 = engine->addBox(glm::vec3(-2, 1, -2),glm::vec3(1,1,1),glm::vec3(0,45,0));
 	
 	std::shared_ptr<Entity> gui = engine->addEntity("GUI");	
-	std::shared_ptr<GUIRenderer> guiR = newent->addComponent<GUIRenderer>();
+	std::shared_ptr<GUIRenderer> guiR = tibbers->addComponent<GUIRenderer>();
 	glm::vec4 sizes = glm::vec4((WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT / 2 - 25), 50, 50); //makes the gui central
 	guiR->renderInit("../shaders/guiShader.txt", "../models/circle.png");
 	guiR->setPosSize(sizes);

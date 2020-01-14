@@ -103,7 +103,17 @@ void FPContoller::onUpdate()
 	    SDL_SetWindowGrab(eng->getWindow(), SDL_TRUE);
 		SDL_WarpMouseInWindow(eng->getWindow(), (WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2));
 	}
-	if (ent->getComponent<Camera>()->getActive())
+	if (ent->checkComponent<Camera>())
+	{
+		if (ent->getComponent<Camera>()->getActive())
+		{
+			std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+
+			transform->setPos(pos);
+			transform->setRot(angleY, angleX, transform->getRotZ());
+		}
+	}
+	else
 	{
 		std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
 
