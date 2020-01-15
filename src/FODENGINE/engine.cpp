@@ -172,4 +172,9 @@ void Engine::stop()
 {
 }
 
+float Engine::getDeltaT()
+{
+	return deltaT;
+}
+
 

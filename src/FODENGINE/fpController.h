@@ -18,11 +18,14 @@ class FPContoller : public Component
 
 	int mouseX;
 	int mouseY;
-
+	std::shared_ptr<Camera> cam;
+	glm::vec3 offset;
 	bool cursorLock = true;
+	bool firstperson = true;
 public:
 
 	FPContoller();
+	void FPContollerInit(std::shared_ptr<Camera> Cam, glm::vec3 Offset);
 	virtual void onUpdate();
 	void setMovespeed(float movs);
 

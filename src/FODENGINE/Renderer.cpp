@@ -10,7 +10,7 @@ Renderer::~Renderer()
 
 void Renderer::renderInit(char* _shader, char* _model, char* _texture, bool skybox)
 {
-	//stbi_set_flip_vertically_on_load(true);
+	
 	sky = skybox;
 	std::sr1::shared_ptr<Engine> eng = getEngine();
 	shader = eng->context->createShader();
@@ -104,6 +104,7 @@ void Renderer::onDisplay()
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 	camera = getEngine()->getActiveCam();
+	
 	if (!sky)
 	{
 		shader->setUniform("u_LightPos", glm::vec3(0, 3, 2));

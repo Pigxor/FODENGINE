@@ -13,6 +13,7 @@
 #include "skyBox.h"
 #include "boxCollider.h"
 #include "guiRenderer.h"
+#include "physics.h"
 
 #include <stb_image.h>
 #include <iostream>
@@ -60,6 +61,7 @@ public:
 	std::sr1::shared_ptr<rend::Context> getContext();
 	void start();
 	void stop();
+	float getDeltaT();
 	
 	template<class T>
 	std::vector<std::shared_ptr<Entity>> getEntities()

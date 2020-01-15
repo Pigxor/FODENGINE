@@ -21,7 +21,7 @@ class Entity
 	std::vector<std::shared_ptr<Component>> components;
 	virtual void Update();
 	virtual void Display();
-	
+	bool floor = false;
 
 public:
 	const char* name;
@@ -95,6 +95,9 @@ public:
 		rtn->name = name;
 		return rtn;
 	}
+
+	bool getFloor();
+	void setFloor(bool Floor);
 };
 
 #endif

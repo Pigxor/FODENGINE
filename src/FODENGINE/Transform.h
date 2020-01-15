@@ -15,6 +15,7 @@ class Transform : public Component
 	float rotationZ;
 	glm::vec3 scale;
 	glm::mat4 model;
+	float relativeHeight;
 
 public:
 
@@ -27,6 +28,8 @@ public:
 	float getRotY();
 	float getRotX();
 	float getRotZ();
+	void setRHeight(float height);
+	float getRHeight();
 	void setScale(glm::vec3 _scale);
 	glm::vec3 getScale();
 	glm::mat4 getModel();

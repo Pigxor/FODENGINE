@@ -9,7 +9,7 @@ Transform::Transform()
 	rotationZ = 0;
 	scale = glm::vec3(1.0f,1.0f,1.0f);
 	model = glm::mat4(1.0f);	
-
+	relativeHeight = scale.y;
 }
 
 void Transform::setPos(glm::vec3 pos)
@@ -53,6 +53,16 @@ float Transform::getRotX()
 float Transform::getRotZ()
 {
 	return rotationZ;
+}
+
+void Transform::setRHeight(float height)
+{
+	relativeHeight = height;
+}
+
+float Transform::getRHeight()
+{
+	return relativeHeight;
 }
 
 void Transform::setScale(glm::vec3 _scale)

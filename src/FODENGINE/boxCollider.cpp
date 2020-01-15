@@ -17,7 +17,7 @@ void BoxCollider::onUpdate()
 {
 	if (active)
 	{
-		//	staticMeshCollide();
+		//staticMeshCollide();
 		boxCollide();
 	}
 }
@@ -28,6 +28,9 @@ void BoxCollider::staticMeshCollide()
 
 void BoxCollider::boxCollide()
 {
+	heights.clear();
+	colliding.clear();
+
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 	glm::vec3 newPos = transform->getPos() + offset;
@@ -37,16 +40,53 @@ void BoxCollider::boxCollide()
 	{
 		if ((*it)->name != name && (*it)->getComponent<BoxCollider>()->getActive() == true)
 		{
-			if(moveable)
+			heights.push_back((*it)->getComponent<Transform>()->getPos().y + (*it)->getComponent<Transform>()->getRHeight());
+			glm::vec3 collResp = (*it)->getComponent<BoxCollider>()->getCollResponse(newPos, size);
+			bool colls = (*it)->getComponent<BoxCollider>()->isColliding(newPos, size);
+			if (colls)
 			{
-				glm::vec3 collResp = (*it)->getComponent<BoxCollider>()->getCollResponse(newPos, size);
-				newPos = collResp;
-				newPos = newPos - offset;
+				colliding.push_back((*it));
+			}
+			newPos = collResp;
+			newPos = newPos - offset;
+			if (newPos != transform->getPos())
+			{
+				if (abs(newPos.y - transform->getPos().y) < 0.1f || abs(transform->getPos().y - newPos.y) > 0.1f)
+				{
+					if (colliding.size() > 0)
+					{
+						setLanded(true);
+						if (ent->checkComponent<Physics>())
+						{
+							ent->getComponent<Physics>()->setGrav(0);
+						}
+						if ((*it)->getFloor())
+						{
+							//setFloored(true);
+						}
+					}
+					
+				}
+			}
+			else 
+			{
+			//	setFloored(false);
+				if (ent->checkComponent<Physics>())
+				{
+					ent->getComponent<Physics>()->setGrav(-9.81);
+				}
+			}
+		
+			if (moveable)
+			{
 				transform->setPos(newPos);
 				lastPos = newPos;
 			}
+
 		}
 	}
+
+
 }
 
 bool BoxCollider::isColliding(glm::vec3 pos, glm::vec3 Size)
@@ -111,6 +151,7 @@ bool BoxCollider::isColliding(glm::vec3 pos, glm::vec3 Size)
 
 glm::vec3 BoxCollider::getCollResponse(glm::vec3 pos, glm::vec3 size)
 {
+
 	float amount = 0.1f;
 	float step = 0.1f;
 
@@ -152,6 +193,11 @@ void BoxCollider::setSize(glm::vec3 Size)
 	size = Size;
 }
 
+glm::vec3 BoxCollider::getSize()
+{
+	return size;
+}
+
 bool BoxCollider::checkColliding(glm::vec3 pos, glm::vec3 Size)
 {
 	bool col = isColliding(pos, Size);
@@ -168,3 +214,22 @@ bool BoxCollider::getMoveable()
 	return moveable;
 }
 
+bool BoxCollider::getLanded()
+{
+	return landed;
+}
+
+void BoxCollider::setLanded(bool land)
+{
+	landed = land;
+}
+
+bool BoxCollider::getFloored()
+{
+	return floored;
+}
+
+void BoxCollider::setFloored(bool Floored)
+{
+	floored = Floored;
+}

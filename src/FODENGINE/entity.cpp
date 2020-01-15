@@ -25,3 +25,13 @@ std::shared_ptr<Engine> Entity::getEngine(std::shared_ptr<Engine> _engine)
 {
 	return engine.lock();
 }
+
+bool Entity::getFloor()
+{
+	return floor;
+}
+
+void Entity::setFloor(bool Floor)
+{
+	floor = Floor;
+}

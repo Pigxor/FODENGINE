@@ -11,6 +11,22 @@ FPContoller::FPContoller()
 
 }
 
+void FPContoller::FPContollerInit(std::shared_ptr<Camera> Cam, glm::vec3 Offset)
+{
+	cam = Cam;
+	offset = Offset;
+	firstperson = false;
+	glm::mat4 t(1.0f);
+	t = glm::mat4(1.0f);
+	t = glm::rotate(t, glm::radians(angleX), glm::vec3(0, 1, 0));
+	t = glm::translate(t, glm::vec3(0, 1, 0));
+	up = t * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	up = glm::normalize(up);
+
+}
+
+
+
 void FPContoller::onUpdate()
 {
 	std::sr1::shared_ptr<Entity> ent = getEntity();
@@ -51,32 +67,73 @@ void FPContoller::onUpdate()
 		{
 			angleY += rotspeed;
 		}
+		
 	}
 
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	if (state[SDL_SCANCODE_D])
 	{
-		pos += (right*movespeed);
+		if (firstperson)
+		{
+			pos += (right*movespeed);
+		}
+		else
+		{
+			pos -= (right*movespeed);
+		}
 	}
 	if (state[SDL_SCANCODE_A])
 	{
-		pos -= (right*movespeed);
+		if (firstperson)
+		{
+			pos -= (right*movespeed);
+		}
+		else
+		{
+			pos += (right*movespeed);
+		}
 	}
 	if (state[SDL_SCANCODE_W])
 	{
-		pos += (fwd*movespeed);
+		if (firstperson)
+		{
+			pos += (fwd*movespeed);
+		}
+		else
+		{
+			pos -= (fwd*movespeed);
+		}
 	}
 	if (state[SDL_SCANCODE_S])
 	{
-		pos -= (fwd*movespeed);
+		if (firstperson)
+		{
+			pos -= (fwd*movespeed);
+		}
+		else
+		{
+			pos += (fwd*movespeed);
+		}
 	}
 	if (state[SDL_SCANCODE_SPACE])
 	{
-		pos += (up*movespeed);
+		if (ent->checkComponent<Physics>())
+		{
+			if (ent->getComponent<BoxCollider>()->getLanded())
+			{
+				ent->getComponent<Physics>()->addVelocity(glm::vec3(0, 1 * movespeed, 0));
+				ent->getComponent<Physics>()->setGrav(-9.81);
+				ent->getComponent<BoxCollider>()->setLanded(false);
+			}
+		}
+		else
+		{
+			pos += (up*movespeed * 5.0f);
+		}
 	}
 	if (state[SDL_SCANCODE_LSHIFT])
 	{
-		pos -= (up*movespeed);
+		pos -= (up*movespeed * 5.0f);
 	}
 	if (state[SDL_SCANCODE_L])
 	{
@@ -103,22 +160,42 @@ void FPContoller::onUpdate()
 	    SDL_SetWindowGrab(eng->getWindow(), SDL_TRUE);
 		SDL_WarpMouseInWindow(eng->getWindow(), (WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2));
 	}
-	if (ent->checkComponent<Camera>())
+	if (!firstperson)
 	{
-		if (ent->getComponent<Camera>()->getActive())
-		{
-			std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
-
-			transform->setPos(pos);
-			transform->setRot(angleY, angleX, transform->getRotZ());
-		}
+		active = cam->getActive();
 	}
-	else
+	if (active)
 	{
-		std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+		if (ent->checkComponent<Camera>())
+		{
+			if (ent->getComponent<Camera>()->getActive())
+			{
+				std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
 
-		transform->setPos(pos);
-		transform->setRot(angleY, angleX, transform->getRotZ());
+				transform->setPos(pos);
+				transform->setRot(angleY, angleX, transform->getRotZ());
+			}
+		}
+		else
+		{
+			if (!firstperson && cam->getActive())
+			{
+				std::shared_ptr<Transform> camTran = cam->getEntity()->getComponent<Transform>();
+				camTran->setPos(pos);
+				camTran->setRot(angleY, angleX+180, transform->getRotZ());
+				camTran->setPos(pos - (offset.z*fwd) - (offset.y*up) - (offset.x * right));
+				transform->setPos(pos);
+				transform->setRot(transform->getRotX(), angleX, transform->getRotZ());
+				std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+			}
+			else
+			{
+				std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+
+				transform->setPos(pos);
+				transform->setRot(angleY, angleX, transform->getRotZ());
+			}
+		}
 	}
 }
 
