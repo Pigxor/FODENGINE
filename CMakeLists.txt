@@ -43,8 +43,8 @@ add_library(fodengine
  src/FODENGINE/skyBox.h
  src/FODENGINE/boxCollider.cpp
  src/FODENGINE/boxCollider.h
- src/FODENGINE/modelCollider.cpp
- src/FODENGINE/modelCollider.h
+ src/FODENGINE/physics.cpp
+ src/FODENGINE/physics.h
  src/FODENGINE/guiRenderer.cpp
  src/FODENGINE/guiRenderer.h
 )
