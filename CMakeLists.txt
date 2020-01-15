@@ -47,6 +47,8 @@ add_library(fodengine
  src/FODENGINE/physics.h
  src/FODENGINE/guiRenderer.cpp
  src/FODENGINE/guiRenderer.h
+ src/FODENGINE/2dAnimation.cpp
+ src/FODENGINE/2dAnimation.h
 )
 target_link_libraries(fodengine SDL2 rend OpenAL32)
 
