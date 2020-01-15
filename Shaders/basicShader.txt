@@ -1,4 +1,3 @@
-
 #ifdef VERTEX                            
                                              
 attribute vec3 a_Position;                 
@@ -48,4 +47,4 @@ void main()
   if(gl_FragColor.x == 9) gl_FragColor.x = v_Normal.x; 
 }                                            
                                             
-#endif                                       
+#endif            
