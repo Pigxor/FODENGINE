@@ -47,7 +47,7 @@ int main()
 	std::shared_ptr<BoxCollider> tibbersBC = tibbers->addComponent<BoxCollider>();
 	std::shared_ptr<FPContoller> tibbersC = tibbers->addComponent<FPContoller>();
 	tibbersR->renderInit("../shaders/basicShader.txt", "../models/Tibbers.obj", "../models/Tibbers.png", false);
-	tibbers->getComponent<Transform>()->setPos({ 0,0.5,0 });
+	tibbers->getComponent<Transform>()->setPos({ 0,0.5,1 });
 	tibbers->getComponent<Transform>()->setScale({ 0.01,0.01,0.01 });
 	tibbers->getComponent<Transform>()->setRot(0, 180, 0);
 	tibbers->getComponent<Transform>()->setRHeight(1.3f);
@@ -77,15 +77,30 @@ int main()
 	std::shared_ptr<Entity> whitebox2 = engine->addBox(glm::vec3(-2, 1.5, -2),glm::vec3(1,1,1),glm::vec3(0,45,0));
 	
 	std::shared_ptr<Entity> gui = engine->addEntity("GUI");	
-	std::shared_ptr<GUIRenderer> guiR = tibbers->addComponent<GUIRenderer>();
+	std::shared_ptr<GUIRenderer> guiR = gui->addComponent<GUIRenderer>();
 	glm::vec4 sizes = glm::vec4((WINDOW_WIDTH/2 - 25), (WINDOW_HEIGHT / 2 - 25), 50, 50); //makes the gui central
 	guiR->renderInit("../shaders/guiShader.txt", "../models/circle.png");
 	guiR->setPosSize(sizes);
 
+	std::shared_ptr<Entity> animGUI = engine->addEntity("GUI");
+	std::shared_ptr<SpriteAnim> animGUIR = animGUI->addComponent<SpriteAnim>();
+	glm::vec4 positioning = glm::vec4(0, WINDOW_HEIGHT-200, 200, 200);
+	animGUIR->renderInit("../shaders/guiShader.txt");
+	animGUIR->addSprite("../models/sorc/sorc1.png");	
+	animGUIR->addSprite("../models/sorc/sorc2.png");	
+	animGUIR->addSprite("../models/sorc/sorc3.png");	
+	animGUIR->addSprite("../models/sorc/sorc4.png");	
+	animGUIR->addSprite("../models/sorc/sorc5.png");	
+	animGUIR->addSprite("../models/sorc/sorc6.png");	
+	animGUIR->addSprite("../models/sorc/sorc7.png");	
+	animGUIR->addSprite("../models/sorc/sorc8.png");	
+	animGUIR->addSprite("../models/sorc/sorc9.png");	
+	animGUIR->addSprite("../models/sorc/sorc10.png");	
+	animGUIR->setPosSize(positioning);
+
 	std::shared_ptr<Entity> entity = engine->addEntity("Audio1");
 	std::shared_ptr<audioSource> audio = entity->addComponent<audioSource>();
-	//audio->audioSourceInit("../sounds/Ignite.mp3"); Ogg Only
-	//audio->playSound();
+	audio->audioSourceInit("../sounds/ignite.ogg");
 
 	engine->start();
 	

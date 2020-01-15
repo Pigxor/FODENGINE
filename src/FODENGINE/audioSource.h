@@ -24,6 +24,7 @@ public:
 	void playSound();
 	void load_ogg(char* _audio);
 	bool soundCheck();
+	void onUpdate();
 };
 
 

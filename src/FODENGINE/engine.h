@@ -14,6 +14,7 @@
 #include "boxCollider.h"
 #include "guiRenderer.h"
 #include "physics.h"
+#include"2dAnimation.h"
 
 #include <stb_image.h>
 #include <iostream>

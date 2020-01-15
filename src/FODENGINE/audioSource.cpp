@@ -71,3 +71,14 @@ bool audioSource::soundCheck()
 	return (state == AL_PLAYING);
 }
 
+void audioSource::onUpdate()
+{
+	if (soundCheck() == true)
+	{
+	}
+	if (soundCheck() == false)
+	{
+		playSound();
+	}
+
+}
