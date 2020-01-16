@@ -28,7 +28,6 @@ void BoxCollider::staticMeshCollide()
 
 void BoxCollider::boxCollide()
 {
-	heights.clear();
 	colliding.clear();
 
 	std::sr1::shared_ptr<Entity> ent = getEntity();

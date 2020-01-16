@@ -14,7 +14,8 @@
 #include "boxCollider.h"
 #include "guiRenderer.h"
 #include "physics.h"
-#include"2dAnimation.h"
+#include "2dAnimation.h"
+#include "3dAnimation.h"
 
 #include <stb_image.h>
 #include <iostream>
@@ -56,7 +57,7 @@ public:
 	SDL_Window* getWindow();
 	std::shared_ptr<Camera> getActiveCam();
 	std::shared_ptr<Camera> addCamera(int angle);
-	std::shared_ptr<Entity> Engine::addBox(glm::vec3 pos, glm::vec3 scale,glm::vec3 rots);
+	std::shared_ptr<Entity> Engine::addBox(glm::vec3 pos, glm::vec3 scale,glm::vec3 rots, const char* nme);
 	int getCamsSize();
 
 	std::sr1::shared_ptr<rend::Context> getContext();

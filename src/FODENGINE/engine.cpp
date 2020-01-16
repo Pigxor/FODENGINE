@@ -101,9 +101,9 @@ std::shared_ptr<Camera> Engine::addCamera(int angle)
 	return cam;
 }
 
-std::shared_ptr<Entity> Engine::addBox(glm::vec3 pos, glm::vec3 scale, glm::vec3 rots)
+std::shared_ptr<Entity> Engine::addBox(glm::vec3 pos, glm::vec3 scale, glm::vec3 rots, const char* nme)
 {
-	std::shared_ptr<Entity> box = addEntity("Box");
+	std::shared_ptr<Entity> box = addEntity(nme);
 	std::shared_ptr<Renderer> boxR = box->addComponent<Renderer>();
 	std::shared_ptr<BoxCollider> boxBC = box->addComponent<BoxCollider>();
 	boxR->renderInit("../shaders/basicShader.txt", "../models/cube.obj", "../models/grey.png", false);

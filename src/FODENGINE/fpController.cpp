@@ -117,18 +117,21 @@ void FPContoller::onUpdate()
 	}
 	if (state[SDL_SCANCODE_SPACE])
 	{
-		if (ent->checkComponent<Physics>())
+		if (getActive())
 		{
-			if (ent->getComponent<BoxCollider>()->getLanded())
+			if (ent->checkComponent<Physics>())
 			{
-				ent->getComponent<Physics>()->addVelocity(glm::vec3(0, 1 * movespeed, 0));
-				ent->getComponent<Physics>()->setGrav(-9.81);
-				ent->getComponent<BoxCollider>()->setLanded(false);
+				if (ent->getComponent<BoxCollider>()->getLanded())
+				{
+					ent->getComponent<Physics>()->addVelocity(glm::vec3(0, 1 * movespeed, 0));
+					ent->getComponent<Physics>()->setGrav(-9.81);
+					ent->getComponent<BoxCollider>()->setLanded(false);
+				}
 			}
-		}
-		else
-		{
-			pos += (up*movespeed * 5.0f);
+			else
+			{
+				pos += (up*movespeed * 5.0f);
+			}
 		}
 	}
 	if (state[SDL_SCANCODE_LSHIFT])

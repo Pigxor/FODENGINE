@@ -10,7 +10,6 @@ int main()
 	std::shared_ptr<Camera> cam = engine->addCamera(60);
 	std::shared_ptr<FPContoller> camcont = cam->getEntity()->addComponent<FPContoller>();
 	std::shared_ptr<BoxCollider> cambox = cam->getEntity()->addComponent<BoxCollider>();
-	std::shared_ptr<Physics> camP = cam->getEntity()->addComponent<Physics>();
 	cam->setActive(true);
 	cam->getEntity()->getComponent<Transform>()->setPos(glm::vec3(0, 2, 5));
 	camcont->setMovespeed(0.2f);
@@ -46,7 +45,8 @@ int main()
 	std::shared_ptr<Renderer> tibbersR = tibbers->addComponent<Renderer>();
 	std::shared_ptr<BoxCollider> tibbersBC = tibbers->addComponent<BoxCollider>();
 	std::shared_ptr<FPContoller> tibbersC = tibbers->addComponent<FPContoller>();
-	tibbersR->renderInit("../shaders/basicShader.txt", "../models/Tibbers.obj", "../models/Tibbers.png", false);
+	std::shared_ptr<Physics> tibbersP = tibbers->addComponent<Physics>();
+	tibbersR->renderInit("../shaders/basicShader.txt", "../models/tibbers/Tibbers.obj", "../models/tibbers/Tibbers.png", false);
 	tibbers->getComponent<Transform>()->setPos({ 0,0.5,1 });
 	tibbers->getComponent<Transform>()->setScale({ 0.01,0.01,0.01 });
 	tibbers->getComponent<Transform>()->setRot(0, 180, 0);
@@ -72,9 +72,42 @@ int main()
 	floorBC->setSize(glm::vec3(50, 1, 50));
 	floorBC->setOffset(glm::vec3(0, 0, 0));
 	floorBC->setMoveable(false);
+
+	std::shared_ptr<Entity> valour = engine->addEntity("Valour");
+	std::shared_ptr<ModelAnim> valourR = valour->addComponent<ModelAnim>();
+	std::shared_ptr<BoxCollider> valourBC = valour->addComponent<BoxCollider>();
+	valourR->renderInit("../shaders/basicShader.txt");
+	valour->getComponent<Transform>()->setPos({ 0,3,-2 });
+	valour->getComponent<Transform>()->setScale({ 0.01,0.01,0.01 });
+	valour->getComponent<Transform>()->setRot(0, 0, 0);
+	valour->getComponent<Transform>()->setRHeight(1.3f);
+	valourBC->boxCollInit(true);
+	valourBC->setSize(glm::vec3(0.5, 1, 0.5));
+	valourBC->setOffset(glm::vec3(0, 0.5, 0));
+	valourBC->setMoveable(false);
+	valourR->addTex("../models/Val/valour.png");
+	valourR->addMesh("../models/Val/Valn4.obj");
+	valourR->addMesh("../models/Val/Valn3.obj");
+	valourR->addMesh("../models/Val/Valn2.obj");
+	valourR->addMesh("../models/Val/Valn1.obj");
+	valourR->addMesh("../models/Val/Val0.obj");
+	valourR->addMesh("../models/Val/Val1.obj");
+	valourR->addMesh("../models/Val/Val2.obj");
+	valourR->addMesh("../models/Val/Val3.obj");
 													
-	std::shared_ptr<Entity> whitebox1 = engine->addBox(glm::vec3(2, 1.5, -2),glm::vec3(1,1,1),glm::vec3(0,45,0));
-	std::shared_ptr<Entity> whitebox2 = engine->addBox(glm::vec3(-2, 1.5, -2),glm::vec3(1,1,1),glm::vec3(0,45,0));
+	std::shared_ptr<Entity> whitebox1 = engine->addBox(glm::vec3(2, 1.5, -2),glm::vec3(1,1,1),glm::vec3(0,45,0) , "box1");
+	std::shared_ptr<Entity> whitebox2 = engine->addBox(glm::vec3(-2, 1.5, -2),glm::vec3(1,1,1),glm::vec3(0,45,0), "box2");
+
+	std::shared_ptr<Entity> whitebox3 = engine->addBox(glm::vec3(-6, 1.5, 8), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), "box3");
+	whitebox3->getComponent<BoxCollider>()->setMoveable(true);
+	std::shared_ptr<Entity> whitebox4 = engine->addBox(glm::vec3(-3, 1.5, 8), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), "box4");
+	whitebox4->getComponent<BoxCollider>()->setMoveable(true);
+	std::shared_ptr<Entity> whitebox5 = engine->addBox(glm::vec3(0, 1.5, 8), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0) ,"box5");
+	whitebox5->getComponent<BoxCollider>()->setMoveable(true);
+	std::shared_ptr<Entity> whitebox6 = engine->addBox(glm::vec3(3, 1.5, 8), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), "box6");
+	whitebox6->getComponent<BoxCollider>()->setMoveable(true);
+	std::shared_ptr<Entity> whitebox7 = engine->addBox(glm::vec3(6, 1.5, 8), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), "box7");
+	whitebox7->getComponent<BoxCollider>()->setMoveable(true);
 	
 	std::shared_ptr<Entity> gui = engine->addEntity("GUI");	
 	std::shared_ptr<GUIRenderer> guiR = gui->addComponent<GUIRenderer>();
