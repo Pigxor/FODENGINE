@@ -49,6 +49,8 @@ add_library(fodengine
  src/FODENGINE/guiRenderer.h
  src/FODENGINE/2dAnimation.cpp
  src/FODENGINE/2dAnimation.h
+ src/FODENGINE/3dAnimation.cpp
+ src/FODENGINE/3dAnimation.h
 )
 target_link_libraries(fodengine SDL2 rend OpenAL32)
 
