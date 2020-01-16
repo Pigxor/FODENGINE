@@ -6,7 +6,6 @@
 void Camera::cameraInit(float _angle)
 {
 	angle = _angle;
-	posMat = glm::mat4(1.0f);
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
 	camPos = transform->getPos();

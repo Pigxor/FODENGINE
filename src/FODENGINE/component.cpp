@@ -1,12 +1,12 @@
 #include "component.h"
 
-void Component::onCreate()
-{
-}
-
-void Component::onStart()
-{
-}
+//void Component::onCreate()
+//{
+//}
+//
+//void Component::onStart()
+//{
+//}
 
 void Component::onUpdate()
 {

@@ -29,6 +29,12 @@ std::shared_ptr<Engine> Engine::initialize()
 	{
 		throw rend::Exception("Window Failed To Initialise ");
 	}
+
+	if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0)
+	{
+		throw rend::Exception("failed to initialise game controller");
+	}
+
 	//AL device
 	engine->device = alcOpenDevice(NULL);
 	
@@ -50,6 +56,17 @@ std::shared_ptr<Engine> Engine::initialize()
 	}
 	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	engine->context = rend::Context::initialize();
+
+	
+
+	for (int i = 0; i < SDL_NumJoysticks(); i++)
+	{
+		if (SDL_IsGameController(i))
+		{
+			engine->controller = SDL_GameControllerOpen(i);
+			break;
+		}
+	}
 
 	return engine;
 }
@@ -152,6 +169,119 @@ void Engine::start()
 			{
 				quit = true;
 			}
+			else if (event.type == SDL_CONTROLLERBUTTONDOWN)
+			{
+				if (event.cbutton.button == SDL_CONTROLLER_BUTTON_A)
+				{
+					inputNum = 1;
+				}
+				if (event.cbutton.button == SDL_CONTROLLER_BUTTON_B)
+				{
+					inputNum = 2;
+				}
+				if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+				{
+					inputNum = 3;
+				}
+				if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
+				{
+					inputNum = 4;
+				}
+				if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
+				{
+					inputNum = 5;
+				}
+				if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
+				{
+					inputNum = 6;
+				}
+			}
+			else if (event.type == SDL_JOYAXISMOTION && event.type != SDL_CONTROLLERBUTTONDOWN)
+			{
+				if (event.jaxis.axis == 0)
+				{
+					if (event.jaxis.value < -5000)
+					{
+						inputNum = 6;
+					}
+					if (event.jaxis.value > 5000)
+					{
+						inputNum = 3;
+					}
+
+				}
+				if (event.jaxis.axis == 1)
+				{
+					if (event.jaxis.value < -5000)
+					{
+						inputNum = 5;
+					}
+					if (event.jaxis.value > 5000)
+					{
+						inputNum = 4;
+					}
+
+				}
+				if (event.jaxis.axis == 3)
+				{
+					if (event.jaxis.value < -5000)
+					{
+						inputNum = 7;
+					}
+					if (event.jaxis.value > 5000)
+					{
+						inputNum = 8;
+					}
+
+				}
+				if (event.jaxis.axis == 4)
+				{
+					if (event.jaxis.value < -5000)
+					{
+						inputNum = 9;
+					}
+					if (event.jaxis.value > 5000)
+					{
+						inputNum = 10;
+					}
+
+				}
+
+
+			}
+			if (event.type == SDL_CONTROLLERBUTTONUP)
+			{
+				inputNum = 0;
+			}
+			if (event.jaxis.axis == 0)
+			{
+				if (event.jaxis.value > -5000 && event.jaxis.value < 5000)
+				{
+					inputNum = 0;
+				}
+			}
+			if (event.jaxis.axis == 1)
+			{
+				if (event.jaxis.value > -5000 && event.jaxis.value < 5000)
+				{
+					inputNum = 0;
+				}
+			}
+			if (event.jaxis.axis == 4)
+			{
+				if (event.jaxis.value > -5000 && event.jaxis.value < 5000)
+				{
+					inputNum = 0;
+				}
+			}
+			if (event.jaxis.axis == 3)
+			{
+				if (event.jaxis.value > -5000 && event.jaxis.value < 5000)
+				{
+					inputNum = 0;
+				}
+			}
+
 		}	
 
 		for (std::vector<std::shared_ptr<Entity>>::iterator it = entities.begin(); it != entities.end(); it++)
@@ -175,6 +305,11 @@ void Engine::stop()
 float Engine::getDeltaT()
 {
 	return deltaT;
+}
+
+float Engine::getInputNum()
+{
+	return inputNum;
 }
 
 

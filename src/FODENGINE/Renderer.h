@@ -13,25 +13,33 @@
 class Camera;
 
 
-
+/**
+* \brief Component basic renderer for objects
+* Includes a light position within the shader
+*/
 class Renderer : public Component
 {
 
-	SDL_Window *window;
-	GLuint programId;
-	GLuint vaoId;
-	std::sr1::shared_ptr<rend::Shader> shader;
-	std::sr1::shared_ptr<rend::Mesh> mesh;
-	std::sr1::shared_ptr<rend::Texture> tex;
-	std::sr1::shared_ptr<Camera> camera;
-	float angle = 0;
-	bool sky = false;
+	std::sr1::shared_ptr<rend::Shader> shader; ///< Pointer to the shader being used
+	std::sr1::shared_ptr<rend::Mesh> mesh; ///< Pointer to the mesh being used
+	std::sr1::shared_ptr<rend::Texture> tex; ///< Pointer to the texture being used
+	std::sr1::shared_ptr<Camera> camera; ///< Pointer to the currently active camera
+	bool sky = false; ///< Bool that controls if the object is a skybox or not
 
 public:
 
 	~Renderer();
+	/**
+	* \brief Initialised the renderer, loads model, texture and shader from files
+	*/
 	void renderInit(char* _shader, char* _model,char* _texture,bool skybox);
+	/**
+	* \brief Returns a pointer the the mesh that is being used
+	*/
 	std::sr1::shared_ptr<rend::Mesh> getMesh();
+	/**
+	* \brief Render everything to the screen
+	*/
 	void onDisplay();
 };
 

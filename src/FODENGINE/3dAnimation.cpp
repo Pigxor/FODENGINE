@@ -33,11 +33,6 @@ void ModelAnim::renderInit(char* _shader)
 
 }
 
-//std::sr1::shared_ptr<rend::Mesh> ModelAnim::getMesh()
-//{
-//	return mesh;
-//}
-
 void ModelAnim::addTex(char * _texture)
 {
 

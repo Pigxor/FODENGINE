@@ -39,7 +39,6 @@ void BoxCollider::boxCollide()
 	{
 		if ((*it)->name != name && (*it)->getComponent<BoxCollider>()->getActive() == true)
 		{
-			heights.push_back((*it)->getComponent<Transform>()->getPos().y + (*it)->getComponent<Transform>()->getRHeight());
 			glm::vec3 collResp = (*it)->getComponent<BoxCollider>()->getCollResponse(newPos, size);
 			bool colls = (*it)->getComponent<BoxCollider>()->isColliding(newPos, size);
 			if (colls)
@@ -59,17 +58,13 @@ void BoxCollider::boxCollide()
 						{
 							ent->getComponent<Physics>()->setGrav(0);
 						}
-						if ((*it)->getFloor())
-						{
-							//setFloored(true);
-						}
+						
 					}
 					
 				}
 			}
 			else 
 			{
-			//	setFloored(false);
 				if (ent->checkComponent<Physics>())
 				{
 					ent->getComponent<Physics>()->setGrav(-9.81);
@@ -223,12 +218,3 @@ void BoxCollider::setLanded(bool land)
 	landed = land;
 }
 
-bool BoxCollider::getFloored()
-{
-	return floored;
-}
-
-void BoxCollider::setFloored(bool Floored)
-{
-	floored = Floored;
-}

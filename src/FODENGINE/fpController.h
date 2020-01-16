@@ -3,30 +3,43 @@
 
 #include "engine.h"
 
-class FPContoller : public Component
+/**
+* \brief Component that allows the use to control an object
+*/
+class FPController : public Component
 {
-	glm::vec3 fwd;
-	glm::vec3 right;
-	glm::vec3 up;
+	glm::vec3 fwd; ///< Relative forward vector
+	glm::vec3 right; ///< Relative right vector
+	glm::vec3 up; ///< Upwards vector
 
-	glm::vec3 pos;
+	glm::vec3 pos; ///< Posiion to be passed into the transform
 
-	float movespeed = 0.5f;
-	float rotspeed = 1.5f;
-	float angleX;
-	float angleY;
-
-	int mouseX;
-	int mouseY;
-	std::shared_ptr<Camera> cam;
-	glm::vec3 offset;
-	bool cursorLock = true;
-	bool firstperson = true;
+	float movespeed = 0.5f; ///< Movement speed
+	float rotspeed = 1.5f; ///< Rotation Speed
+	float angleX; ///< Rotation angle in the x axis
+	float angleY; ///< Rotation angle in the y axis
+	int inputNum; ///< Input value passed from the engine
+	int mouseX; ///< X coordinate of the mouse cursor
+	int mouseY; ///< Y cooordinate fo the cursor
+	std::shared_ptr<Camera> cam; ///< Pointer to an attached camera
+	glm::vec3 offset; ///< Camera offset from object
+	bool cursorLock = true; ///< Bool controls if the cursor is invisible and locked to the center of the screen
+	bool firstperson = true; ///< Bool controls if the FPController is in first of third person
 public:
 
-	FPContoller();
+	FPController();
+	/**
+	* \brief Initialises the FPController for a thir person camera
+	*/
 	void FPContollerInit(std::shared_ptr<Camera> Cam, glm::vec3 Offset);
-	virtual void onUpdate();
+	/**
+	* \brief Update loop that checks for inputs and controls the positions and rotatios fo an object and camera
+	* Also checks for inputs that control the cursor lock
+	*/
+	void onUpdate();
+	/**
+	* \brief Sets the movement speed to a specific value
+	*/
 	void setMovespeed(float movs);
 
 };

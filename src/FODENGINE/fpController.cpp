@@ -1,6 +1,6 @@
 #include "fpController.h"
 
-FPContoller::FPContoller()
+FPController::FPController()
 {
 	glm::mat4 t(1.0f);
 	t = glm::mat4(1.0f);
@@ -11,7 +11,7 @@ FPContoller::FPContoller()
 
 }
 
-void FPContoller::FPContollerInit(std::shared_ptr<Camera> Cam, glm::vec3 Offset)
+void FPController::FPContollerInit(std::shared_ptr<Camera> Cam, glm::vec3 Offset)
 {
 	cam = Cam;
 	offset = Offset;
@@ -27,7 +27,7 @@ void FPContoller::FPContollerInit(std::shared_ptr<Camera> Cam, glm::vec3 Offset)
 
 
 
-void FPContoller::onUpdate()
+void FPController::onUpdate()
 {
 	std::sr1::shared_ptr<Entity> ent = getEntity();
 	std::sr1::shared_ptr<Transform> transform = ent->getComponent<Transform>();
@@ -47,23 +47,23 @@ void FPContoller::onUpdate()
 	t = glm::translate(t, glm::vec3(1, 0, 0));
 	right = t * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	right = glm::normalize(right);
-	
+	inputNum = eng->getInputNum();
 	if (cursorLock)
 	{
 		const Uint32 mouse = SDL_GetMouseState(&mouseX, &mouseY);
-		if (mouseX > (WINDOW_WIDTH / 2))
+		if (mouseX > (WINDOW_WIDTH / 2) || inputNum == 8)
 		{
 			angleX -= rotspeed;
 		}
-		if (mouseX < (WINDOW_WIDTH / 2))
+		if (mouseX < (WINDOW_WIDTH / 2) || inputNum == 7)
 		{
 			angleX += rotspeed;
 		}
-		if (mouseY > (WINDOW_HEIGHT / 2))
+		if (mouseY > (WINDOW_HEIGHT / 2) || inputNum == 10)
 		{
 			angleY -= rotspeed;
 		}
-		if (mouseY < (WINDOW_HEIGHT / 2))
+		if (mouseY < (WINDOW_HEIGHT / 2) || inputNum == 9)
 		{
 			angleY += rotspeed;
 		}
@@ -71,7 +71,7 @@ void FPContoller::onUpdate()
 	}
 
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
-	if (state[SDL_SCANCODE_D])
+	if (state[SDL_SCANCODE_D] || inputNum == 3)
 	{
 		if (firstperson)
 		{
@@ -82,7 +82,7 @@ void FPContoller::onUpdate()
 			pos -= (right*movespeed);
 		}
 	}
-	if (state[SDL_SCANCODE_A])
+	if (state[SDL_SCANCODE_A] || inputNum == 6)
 	{
 		if (firstperson)
 		{
@@ -93,7 +93,7 @@ void FPContoller::onUpdate()
 			pos += (right*movespeed);
 		}
 	}
-	if (state[SDL_SCANCODE_W])
+	if (state[SDL_SCANCODE_W] || inputNum == 5)
 	{
 		if (firstperson)
 		{
@@ -104,7 +104,7 @@ void FPContoller::onUpdate()
 			pos -= (fwd*movespeed);
 		}
 	}
-	if (state[SDL_SCANCODE_S])
+	if (state[SDL_SCANCODE_S] || inputNum == 4)
 	{
 		if (firstperson)
 		{
@@ -115,7 +115,7 @@ void FPContoller::onUpdate()
 			pos += (fwd*movespeed);
 		}
 	}
-	if (state[SDL_SCANCODE_SPACE])
+	if (state[SDL_SCANCODE_SPACE] || inputNum == 1)
 	{
 		if (getActive())
 		{
@@ -123,18 +123,18 @@ void FPContoller::onUpdate()
 			{
 				if (ent->getComponent<BoxCollider>()->getLanded())
 				{
-					ent->getComponent<Physics>()->addVelocity(glm::vec3(0, 1 * movespeed, 0));
+					ent->getComponent<Physics>()->addVelocity(glm::vec3(0, 0.5 * movespeed, 0));
 					ent->getComponent<Physics>()->setGrav(-9.81);
 					ent->getComponent<BoxCollider>()->setLanded(false);
 				}
 			}
 			else
 			{
-				pos += (up*movespeed * 5.0f);
+				pos += (up);
 			}
 		}
 	}
-	if (state[SDL_SCANCODE_LSHIFT])
+	if (state[SDL_SCANCODE_LSHIFT] || inputNum == 2)
 	{
 		pos -= (up*movespeed * 5.0f);
 	}
@@ -173,7 +173,7 @@ void FPContoller::onUpdate()
 		{
 			if (ent->getComponent<Camera>()->getActive())
 			{
-				std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+				//std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
 
 				transform->setPos(pos);
 				transform->setRot(angleY, angleX, transform->getRotZ());
@@ -189,11 +189,11 @@ void FPContoller::onUpdate()
 				camTran->setPos(pos - (offset.z*fwd) - (offset.y*up) - (offset.x * right));
 				transform->setPos(pos);
 				transform->setRot(transform->getRotX(), angleX, transform->getRotZ());
-				std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+				//std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
 			}
 			else
 			{
-				std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+				//std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
 
 				transform->setPos(pos);
 				transform->setRot(angleY, angleX, transform->getRotZ());
@@ -202,7 +202,7 @@ void FPContoller::onUpdate()
 	}
 }
 
-void FPContoller::setMovespeed(float movs)
+void FPController::setMovespeed(float movs)
 {
 	movespeed = movs;
 }
